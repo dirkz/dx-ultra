@@ -10,8 +10,8 @@ struct DescriptorHeap
     DescriptorHeap(ID3D12Device *pDevice, D3D12_DESCRIPTOR_HEAP_TYPE heapType, UINT numDescriptors,
                    bool isShaderVisible);
 
-    CD3DX12_CPU_DESCRIPTOR_HANDLE HandleCPU(UINT index);
-    CD3DX12_GPU_DESCRIPTOR_HANDLE HandleGPU(UINT index);
+    CD3DX12_CPU_DESCRIPTOR_HANDLE HandleCPU(INT index);
+    CD3DX12_GPU_DESCRIPTOR_HANDLE HandleGPU(INT index);
 
   private:
     ComPtr<ID3D12DescriptorHeap> m_descriptorHeap;
