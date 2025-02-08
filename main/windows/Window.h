@@ -11,7 +11,7 @@ struct Window
 {
     Window(WindowCallback *callback) : m_callback{callback} {};
 
-    int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd);
+    int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd);
 
   private:
     WindowCallback *m_callback;
