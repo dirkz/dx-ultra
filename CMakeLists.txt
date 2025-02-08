@@ -18,10 +18,5 @@ add_compile_definitions(_UNICODE UNICODE)
 
 cmake_path(SET DIRECTX_HEADER_PATH ${CMAKE_CURRENT_SOURCE_DIR}/DirectX-Headers/include/directx)
 
-add_subdirectory(common)
-add_subdirectory(source)
-
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE common)
-
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE d3d12.lib dxgi.lib D3DCompiler.lib)
+add_subdirectory(main)
 
