@@ -3,11 +3,11 @@
 namespace dxultra
 {
 
-SwapChain::SwapChain(IDXGIFactory4 *pFactory, ID3D12Device *pDevice,
+SwapChain::SwapChain(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device> device,
                      ID3D12CommandQueue *pCommandQueue, UINT frameCount, HWND hwnd, UINT width,
                      UINT height)
-    : m_numFrames{frameCount},
-      m_descriptorHeap{pDevice, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, frameCount, false}
+    : m_numFrames{frameCount}, m_device{device},
+      m_descriptorHeap{device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, frameCount, false}
 {
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
     swapChainDesc.BufferCount = frameCount;
