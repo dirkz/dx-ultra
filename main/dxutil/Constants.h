@@ -3,6 +3,6 @@
 namespace dxultra
 {
 
-constexpr UINT FrameCount = 0;
+constexpr UINT FrameCount = 2;
 
 }
