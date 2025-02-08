@@ -1,2 +1,3 @@
-# dx-ultra
-Pushing vertices with DirectX 12
+# DX-Ultra
+
+Tooling for D3D12
