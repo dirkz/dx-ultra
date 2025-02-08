@@ -3,7 +3,9 @@ add_library(dxutil OBJECT
 	DescriptorHeap.h
 	DescriptorHeap.cpp
 	SwapChain.h
-	SwapChain.cpp)
+	SwapChain.cpp
+	Fence.h
+	Fence.cpp)
 
 target_include_directories(dxutil PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
