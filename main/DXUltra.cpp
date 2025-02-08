@@ -27,6 +27,13 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
 
     ThrowIfFailed(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0,
                                     IID_PPV_ARGS(m_device.GetAddressOf())));
+
+    D3D12_COMMAND_QUEUE_DESC queueDesc{};
+    queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+    queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+
+    ThrowIfFailed(
+        m_device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(m_commandQueue.GetAddressOf())));
 }
 
 void DXUltra::OnUpdate()
