@@ -37,6 +37,8 @@ void SwapChain::CreateRenderTargets()
     {
         ThrowIfFailed(
             m_swapChain->GetBuffer(i, IID_PPV_ARGS(m_renderTargets[i].ReleaseAndGetAddressOf())));
+        m_device->CreateRenderTargetView(m_renderTargets[i].Get(), nullptr,
+                                         m_descriptorHeap.HandleCPU(i));
     }
 }
 
