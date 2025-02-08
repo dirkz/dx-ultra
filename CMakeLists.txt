@@ -19,9 +19,7 @@ add_compile_definitions(_UNICODE UNICODE)
 cmake_path(SET DIRECTX_HEADER_PATH ${CMAKE_CURRENT_SOURCE_DIR}/DirectX-Headers/include/directx)
 
 add_subdirectory(common)
-
-# Add source to this project's executable.
-add_executable (${CMAKE_PROJECT_NAME} WIN32 "main.cpp")
+add_subdirectory(source)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE common)
 
