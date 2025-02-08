@@ -27,8 +27,11 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     ComPtr<IDXGIAdapter1> adapter;
     ThrowIfFailed(factory->EnumAdapters1(0, adapter.GetAddressOf()));
 
+    ComPtr<ID3D12Device> device;
     ThrowIfFailed(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0,
-                                    IID_PPV_ARGS(m_device.GetAddressOf())));
+                                    IID_PPV_ARGS(device.GetAddressOf())));
+
+    ThrowIfFailed(device.As(&m_device));
 
     D3D12_COMMAND_QUEUE_DESC queueDesc{};
     queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;

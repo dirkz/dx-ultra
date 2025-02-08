@@ -15,7 +15,7 @@ struct DXUltra : WindowCallback
     void OnRender() override;
 
   private:
-    ComPtr<ID3D12Device> m_device;
+    ComPtr<ID3D12Device4> m_device;
     ComPtr<ID3D12CommandQueue> m_commandQueue;
     std::unique_ptr<SwapChain> m_swapChain;
 };

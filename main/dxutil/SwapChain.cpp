@@ -3,7 +3,7 @@
 namespace dxultra
 {
 
-SwapChain::SwapChain(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device> device,
+SwapChain::SwapChain(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device4> device,
                      ID3D12CommandQueue *pCommandQueue, UINT numFrames, HWND hwnd, UINT width,
                      UINT height)
     : m_numFrames{numFrames}, m_device{device},
