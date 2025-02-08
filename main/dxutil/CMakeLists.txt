@@ -1,4 +1,4 @@
-add_library(dxutil OBJECT DescriptorHeap.h DescriptorHeap.cpp)
+add_library(dxutil OBJECT Constants.h DescriptorHeap.h DescriptorHeap.cpp)
 
 target_include_directories(dxutil PUBLIC {CMAKE_CURRENT_SOURCE_DIR})
 
