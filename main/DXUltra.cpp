@@ -46,6 +46,8 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     ThrowIfFailed(m_device->CreateCommandList1(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
                                                D3D12_COMMAND_LIST_FLAG_NONE,
                                                IID_PPV_ARGS(m_commandList.GetAddressOf())));
+
+    m_fence.reset(new Fence{m_device.Get()});
 }
 
 void DXUltra::OnUpdate()

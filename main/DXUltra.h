@@ -2,8 +2,9 @@
 
 #include "stdafx.h"
 
-#include "WindowCallback.h"
+#include "Fence.h"
 #include "SwapChain.h"
+#include "WindowCallback.h"
 
 namespace dxultra
 {
@@ -19,6 +20,7 @@ struct DXUltra : WindowCallback
     ComPtr<ID3D12CommandQueue> m_commandQueue;
     std::unique_ptr<SwapChain> m_swapChain;
     ComPtr<ID3D12CommandList> m_commandList;
+    std::unique_ptr<Fence> m_fence;
 };
 
 } // namespace dxultra
