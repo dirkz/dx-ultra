@@ -13,7 +13,7 @@ inline void ThrowIfFailed(HRESULT hr)
         LPCTSTR errMsg = err.ErrorMessage();
         OutputDebugString(errMsg);
         OutputDebugString(L"\n");
-        int nWideChars = wcslen(errMsg);
+        int nWideChars = static_cast<int>(wcslen(errMsg));
         int cbNeeded =
             WideCharToMultiByte(CP_UTF8, 0, errMsg, nWideChars, nullptr, 0, nullptr, nullptr);
         std::string message(cbNeeded + 1, '\0');
