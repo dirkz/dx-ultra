@@ -42,6 +42,10 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
 
     m_swapChain.reset(new SwapChain{factory.Get(), m_device, m_commandQueue.Get(), NumFrames, hwnd,
                                     width, height});
+
+    ThrowIfFailed(m_device->CreateCommandList1(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
+                                               D3D12_COMMAND_LIST_FLAG_NONE,
+                                               IID_PPV_ARGS(m_commandList.GetAddressOf())));
 }
 
 void DXUltra::OnUpdate()
