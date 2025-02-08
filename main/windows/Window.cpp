@@ -51,7 +51,7 @@ int Window::WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
     int width = right - left;
     int height = screenHeightHalve;
 
-    const wchar_t CLASS_NAME[] = L"DX Vertex Pipeline";
+    const wchar_t CLASS_NAME[] = L"DX-Ultra";
 
     WNDCLASS wc = {};
     wc.lpfnWndProc = WindowProc;
@@ -60,8 +60,8 @@ int Window::WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
     RegisterClass(&wc);
 
-    HWND hwnd = CreateWindowEx(0, CLASS_NAME, L"DX Vertex Pipeline", WS_OVERLAPPEDWINDOW, left, top,
-                               width, height, nullptr, nullptr, hInstance, m_callback);
+    HWND hwnd = CreateWindowEx(0, CLASS_NAME, L"DX-Ultra", WS_OVERLAPPEDWINDOW, left, top, width,
+                               height, nullptr, nullptr, hInstance, m_callback);
 
     if (hwnd == NULL)
     {
