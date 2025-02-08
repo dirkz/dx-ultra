@@ -21,4 +21,30 @@ Fence::~Fence()
     CloseHandle(m_event);
 }
 
+void Fence::Signal(ID3D12CommandQueue *pCommandQueue)
+{
+    ++m_value;
+    ThrowIfFailed(pCommandQueue->Signal(m_fence.Get(), m_value));
+}
+
+void Fence::Wait()
+{
+    if (m_value == InitialValue)
+    {
+        return;
+    }
+
+    if (m_fence->GetCompletedValue() < m_value)
+    {
+        ThrowIfFailed(m_fence->SetEventOnCompletion(m_value, m_event));
+        WaitForSingleObject(m_event, INFINITE);
+    }
+}
+
+void Fence::SignalAndWait(ID3D12CommandQueue *pCommandQueue)
+{
+    Signal(pCommandQueue);
+    Wait();
+}
+
 } // namespace dxultra
