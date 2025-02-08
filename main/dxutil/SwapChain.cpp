@@ -6,7 +6,8 @@ namespace dxultra
 SwapChain::SwapChain(IDXGIFactory4 *pFactory, ID3D12Device *pDevice,
                      ID3D12CommandQueue *pCommandQueue, UINT frameCount, HWND hwnd, UINT width,
                      UINT height)
-    : m_descriptorHeap{pDevice, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, frameCount, false}
+    : m_numFrames{frameCount},
+      m_descriptorHeap{pDevice, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, frameCount, false}
 {
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
     swapChainDesc.BufferCount = frameCount;
@@ -24,6 +25,19 @@ SwapChain::SwapChain(IDXGIFactory4 *pFactory, ID3D12Device *pDevice,
     ThrowIfFailed(swapChain.As(&m_swapChain));
 
     ThrowIfFailed(pFactory->MakeWindowAssociation(hwnd, DXGI_MWA_NO_ALT_ENTER));
+
+    CreateRenderTargets();
+}
+
+void SwapChain::CreateRenderTargets()
+{
+    m_renderTargets.resize(m_numFrames);
+
+    for (UINT i = 0; i < m_renderTargets.size(); ++i)
+    {
+        ThrowIfFailed(
+            m_swapChain->GetBuffer(i, IID_PPV_ARGS(m_renderTargets[i].ReleaseAndGetAddressOf())));
+    }
 }
 
 UINT SwapChain::GetCurrentBackBufferIndex()
