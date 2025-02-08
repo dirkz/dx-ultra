@@ -1,5 +1,4 @@
-add_library(windows
-	OBJECT
+add_library(windows OBJECT
 	Window.h
 	Window.cpp
 	WindowCallback.h
