@@ -1,5 +1,7 @@
 #include "DXUltra.h"
 
+#include "Constants.h"
+
 namespace dxultra
 {
 
@@ -34,6 +36,9 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
 
     ThrowIfFailed(
         m_device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(m_commandQueue.GetAddressOf())));
+
+    m_swapChain.reset(
+        new SwapChain{factory.Get(), m_commandQueue.Get(), FrameCount, hwnd, width, height});
 }
 
 void DXUltra::OnUpdate()
