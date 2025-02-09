@@ -9,7 +9,9 @@ add_library(dxutil OBJECT
 	Frame.h
 	Frame.cpp
 	Shader.h
-	Shader.cpp)
+	Shader.cpp
+	DefaultBufferUploader.h
+	DefaultBufferUploader.cpp)
 
 target_include_directories(dxutil PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
