@@ -62,6 +62,7 @@ void DXUltra::OnUpdate()
 void DXUltra::OnRender()
 {
     Frame *pFrame = m_frames[m_swapChain->GetCurrentBackBufferIndex()].get();
+
     pFrame->Wait();
 
     CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle = m_swapChain->CurrentRenderTargetHandle();
