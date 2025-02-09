@@ -12,7 +12,7 @@ struct Frame
     Frame(ID3D12Device4 *pDevice, UINT index);
 
     /// <summary>
-    /// Wait for all previous commands from this frame to finish executing
+    /// Wait for a previous signal.
     /// </summary>
     void Wait();
 
@@ -29,9 +29,9 @@ struct Frame
                              CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle);
 
     /// <summary>
-    /// Signal the end of the execution of this frame on the given command queue
+    /// Signal on the given command queue.
     /// </summary>
-    /// <param name="pCommandQueue">The command queue to signal finishing of work on</param>
+    /// <param name="pCommandQueue">The command queue to signal on</param>
     void Signal(ID3D12CommandQueue *pCommandQueue);
 
   private:

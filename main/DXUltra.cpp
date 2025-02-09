@@ -63,6 +63,7 @@ void DXUltra::OnRender()
 {
     Frame *pFrame = m_frames[m_swapChain->GetCurrentBackBufferIndex()].get();
 
+    // Wait for any previous work of this frame to finish on the command queue.
     pFrame->Wait();
 
     CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle = m_swapChain->CurrentRenderTargetHandle();
@@ -75,6 +76,7 @@ void DXUltra::OnRender()
 
     m_swapChain->Present(1, 0);
 
+    // When the command queue reaches this, it means this frame has finished its work.
     pFrame->Signal(m_commandQueue.Get());
 }
 
