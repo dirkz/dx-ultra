@@ -6,6 +6,9 @@ add_executable(${CMAKE_PROJECT_NAME} WIN32
 add_subdirectory(common)
 add_subdirectory(windows)
 add_subdirectory(dxutil)
+add_subdirectory(shaders)
+
+add_dependencies(${CMAKE_PROJECT_NAME} shaders)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE common)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE windows)
