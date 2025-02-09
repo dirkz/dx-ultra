@@ -9,12 +9,16 @@ Frame::Frame(ID3D12Device4 *pDevice, UINT index) : m_index{index}, m_fence{pDevi
                                                   IID_PPV_ARGS(m_commandAllocator.GetAddressOf())));
 }
 
-void Frame::Render(ID3D12CommandQueue *pCommandQueue, ID3D12GraphicsCommandList *pCommandList,
-                   ID3D12Resource *pRenderTarget, CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle)
+void Frame::Wait()
 {
-    // Wait for previous render
     m_fence.Wait();
+}
 
+void Frame::PopulateCommandList(ID3D12CommandQueue *pCommandQueue,
+                                ID3D12GraphicsCommandList *pCommandList,
+                                ID3D12Resource *pRenderTarget,
+                                CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle)
+{
     ThrowIfFailed(pCommandList->Reset(m_commandAllocator.Get(), nullptr));
 
     auto transitionPresentToRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -29,7 +33,10 @@ void Frame::Render(ID3D12CommandQueue *pCommandQueue, ID3D12GraphicsCommandList 
     pCommandList->ResourceBarrier(1, &transitionRenderTargetToPresent);
 
     ThrowIfFailed(pCommandList->Close());
+}
 
+void Frame::Signal(ID3D12CommandQueue *pCommandQueue)
+{
     m_fence.Signal(pCommandQueue);
 }
 
