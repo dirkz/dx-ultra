@@ -20,7 +20,7 @@ struct DXUltra : WindowCallback
     ComPtr<ID3D12Device4> m_device;
     ComPtr<ID3D12CommandQueue> m_commandQueue;
     std::unique_ptr<SwapChain> m_swapChain;
-    ComPtr<ID3D12CommandList> m_commandList;
+    ComPtr<ID3D12GraphicsCommandList> m_commandList;
     std::unique_ptr<Fence> m_fence;
     std::array<std::unique_ptr<Frame>, NumFrames> m_frames;
 };

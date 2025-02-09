@@ -61,6 +61,16 @@ void DXUltra::OnUpdate()
 
 void DXUltra::OnRender()
 {
+    Frame *pFrame = m_frames[m_swapChain->GetCurrentBackBufferIndex()].get();
+    CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle = m_swapChain->CurrentRenderTargetHandle();
+
+    pFrame->Render(m_commandQueue.Get(), m_commandList.Get(), m_swapChain->CurrentRenderTarget(),
+                   renderTargetHandle);
+
+    ID3D12CommandList *ppCommandLists[] = {m_commandList.Get()};
+    m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+    m_swapChain->Present(1, 0);
 }
 
 } // namespace dxultra

@@ -16,8 +16,11 @@ struct SwapChain
               ID3D12CommandQueue *pCommandQueue, HWND hwnd, UINT width, UINT height);
 
     void CreateRenderTargets();
+    void Present(UINT syncInterval, UINT flags);
 
     UINT GetCurrentBackBufferIndex();
+    ID3D12Resource *CurrentRenderTarget();
+    CD3DX12_CPU_DESCRIPTOR_HANDLE CurrentRenderTargetHandle();
 
   private:
     UINT m_numFrames;

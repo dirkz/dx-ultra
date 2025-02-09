@@ -39,9 +39,24 @@ void SwapChain::CreateRenderTargets()
     }
 }
 
+void SwapChain::Present(UINT syncInterval, UINT flags)
+{
+    ThrowIfFailed(m_swapChain->Present(syncInterval, flags));
+}
+
 UINT SwapChain::GetCurrentBackBufferIndex()
 {
     return m_swapChain->GetCurrentBackBufferIndex();
+}
+
+ID3D12Resource *SwapChain::CurrentRenderTarget()
+{
+    return m_renderTargets[m_swapChain->GetCurrentBackBufferIndex()].Get();
+}
+
+CD3DX12_CPU_DESCRIPTOR_HANDLE SwapChain::CurrentRenderTargetHandle()
+{
+    return m_descriptorHeap.HandleCPU(m_swapChain->GetCurrentBackBufferIndex());
 }
 
 } // namespace dxultra
