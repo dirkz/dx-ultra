@@ -22,7 +22,7 @@ struct DXUltra : WindowCallback
     std::unique_ptr<SwapChain> m_swapChain;
     ComPtr<ID3D12CommandList> m_commandList;
     std::unique_ptr<Fence> m_fence;
-    std::vector<std::unique_ptr<Frame>> m_frames;
+    std::array<std::unique_ptr<Frame>, NumFrames> m_frames;
 };
 
 } // namespace dxultra

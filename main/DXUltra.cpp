@@ -40,8 +40,8 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     ThrowIfFailed(
         m_device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(m_commandQueue.GetAddressOf())));
 
-    m_swapChain.reset(new SwapChain{factory.Get(), m_device, m_commandQueue.Get(), NumFrames, hwnd,
-                                    width, height});
+    m_swapChain.reset(
+        new SwapChain{factory.Get(), m_device, m_commandQueue.Get(), hwnd, width, height});
 
     ThrowIfFailed(m_device->CreateCommandList1(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
                                                D3D12_COMMAND_LIST_FLAG_NONE,
@@ -49,7 +49,6 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
 
     m_fence.reset(new Fence{m_device.Get()});
 
-    m_frames.resize(NumFrames);
     for (UINT i = 0; i < NumFrames; i++)
     {
         m_frames[i].reset(new Frame{m_device.Get(), i});

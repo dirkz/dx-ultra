@@ -4,13 +4,12 @@ namespace dxultra
 {
 
 SwapChain::SwapChain(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device4> device,
-                     ID3D12CommandQueue *pCommandQueue, UINT numFrames, HWND hwnd, UINT width,
-                     UINT height)
-    : m_numFrames{numFrames}, m_device{device},
-      m_descriptorHeap{device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, numFrames, false}
+                     ID3D12CommandQueue *pCommandQueue, HWND hwnd, UINT width, UINT height)
+    : m_device{device},
+      m_descriptorHeap{device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumFrames, false}
 {
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
-    swapChainDesc.BufferCount = numFrames;
+    swapChainDesc.BufferCount = NumFrames;
     swapChainDesc.Width = width;
     swapChainDesc.Height = height;
     swapChainDesc.Format = SwapChainFormat;
@@ -31,8 +30,6 @@ SwapChain::SwapChain(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device4> device,
 
 void SwapChain::CreateRenderTargets()
 {
-    m_renderTargets.resize(m_numFrames);
-
     for (UINT i = 0; i < m_renderTargets.size(); ++i)
     {
         ThrowIfFailed(
