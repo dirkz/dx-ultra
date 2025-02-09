@@ -29,12 +29,19 @@ Shader::Shader(std::string filename)
     }
 
     size_t fileSize = file.tellg();
-    std::vector<char> buffer(fileSize);
+
+    ComPtr<ID3DBlob> m_blob;
+    ThrowIfFailed(D3DCreateBlob(fileSize, m_blob.GetAddressOf()));
 
     file.seekg(0);
-    file.read(buffer.data(), fileSize);
+    file.read(static_cast<char *>(m_blob->GetBufferPointer()), fileSize);
 
     file.close();
+}
+
+ID3DBlob *Shader::Blob()
+{
+    return m_blob.Get();
 }
 
 } // namespace dxultra
