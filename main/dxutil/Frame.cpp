@@ -14,8 +14,7 @@ void Frame::Wait()
     m_fence.Wait();
 }
 
-void Frame::PopulateCommandList(ID3D12CommandQueue *pCommandQueue,
-                                ID3D12GraphicsCommandList *pCommandList,
+void Frame::PopulateCommandList(ID3D12GraphicsCommandList *pCommandList,
                                 ID3D12Resource *pRenderTarget,
                                 CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle)
 {

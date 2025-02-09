@@ -17,15 +17,15 @@ struct Frame
     void Wait();
 
     /// <summary>
-    /// Fill the given command list with render commands for this frame
+    /// Fill the given command list with render commands for this frame.
     /// </summary>
-    /// <param name="pCommandQueue">The command queue should only be used for
-    /// synchronization</param> <param name="pCommandList">The graphics command list to fill with
-    /// commands</param> <param name="pRenderTarget">The current render target from the swap
-    /// chain</param> <param name="renderTargetHandle">The handle to the current render target from
+    /// <param name="pCommandList">The graphics command list to fill with
+    /// commands</param>
+    /// <param name="pRenderTarget">The current render target from the swap
+    /// chain</param>
+    /// <param name="renderTargetHandle">The handle to the current render target from
     /// the swap chain</param>
-    void PopulateCommandList(ID3D12CommandQueue *pCommandQueue,
-                             ID3D12GraphicsCommandList *pCommandList, ID3D12Resource *pRenderTarget,
+    void PopulateCommandList(ID3D12GraphicsCommandList *pCommandList, ID3D12Resource *pRenderTarget,
                              CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle);
 
     /// <summary>
