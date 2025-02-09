@@ -73,4 +73,9 @@ void DXUltra::OnRender()
     m_swapChain->Present(1, 0);
 }
 
+void DXUltra::OnDestroy()
+{
+    m_fence->SignalAndWait(m_commandQueue.Get());
+}
+
 } // namespace dxultra
