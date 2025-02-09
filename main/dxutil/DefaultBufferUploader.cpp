@@ -50,4 +50,15 @@ ComPtr<ID3D12Resource1> DefaultBufferUploader::Upload(const void *pData, UINT64 
     return defaultBuffer;
 }
 
+void DefaultBufferUploader::Execute()
+{
+    ThrowIfFailed(m_commandAllocator->Reset());
+    ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), nullptr));
+
+    ID3D12CommandList *ppCommandLists[]{m_commandList.Get()};
+    m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+    m_fence.SignalAndWait(m_commandQueue.Get());
+}
+
 } // namespace dxultra
