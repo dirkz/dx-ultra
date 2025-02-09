@@ -18,6 +18,7 @@ void Frame::PopulateCommandList(ID3D12GraphicsCommandList *pCommandList,
                                 ID3D12Resource *pRenderTarget,
                                 CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle)
 {
+    ThrowIfFailed(m_commandAllocator->Reset());
     ThrowIfFailed(pCommandList->Reset(m_commandAllocator.Get(), nullptr));
 
     auto transitionPresentToRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
