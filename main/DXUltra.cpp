@@ -1,6 +1,7 @@
 #include "DXUltra.h"
 
 #include "Constants.h"
+#include "Shader.h"
 
 namespace dxultra
 {
@@ -53,6 +54,9 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     {
         m_frames[i].reset(new Frame{m_device.Get(), i});
     }
+
+    Shader vertexShader{"basic_triangle.hlsl_VS.cso"};
+    Shader pixelShader{"basic_triangle.hlsl_PS.cso"};
 }
 
 void DXUltra::OnUpdate()

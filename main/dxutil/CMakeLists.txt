@@ -7,7 +7,9 @@ add_library(dxutil OBJECT
 	Fence.h
 	Fence.cpp
 	Frame.h
-	Frame.cpp)
+	Frame.cpp
+	Shader.h
+	Shader.cpp)
 
 target_include_directories(dxutil PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
