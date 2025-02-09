@@ -3,14 +3,14 @@
 namespace dxultra
 {
 
-DefaultBufferUploader::DefaultBufferUploader(ID3D12Device4 *pDevice,
-                                             ID3D12CommandQueue *pCommandQueue,
-                                             ID3D12GraphicsCommandList *pCommandList)
-    : m_device{pDevice}, m_commandQueue{pCommandQueue}, m_commandList{pCommandList},
-      m_fence{pDevice}
+DefaultBufferUploader::DefaultBufferUploader(ComPtr<ID3D12Device4> device,
+                                             ComPtr<ID3D12CommandQueue> commandQueue,
+                                             ComPtr<ID3D12GraphicsCommandList> commandList)
+    : m_device{device}, m_commandQueue{commandQueue}, m_commandList{commandList},
+      m_fence{device.Get()}
 {
-    ThrowIfFailed(pDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
-                                                  IID_PPV_ARGS(m_commandAllocator.GetAddressOf())));
+    ThrowIfFailed(device.Get()->CreateCommandAllocator(
+        D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_commandAllocator.GetAddressOf())));
 }
 
 ComPtr<ID3D12Resource1> DefaultBufferUploader::Upload(const void *pData, UINT64 size)
@@ -38,7 +38,7 @@ ComPtr<ID3D12Resource1> DefaultBufferUploader::Upload(const void *pData, UINT64 
         defaultBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST);
     m_commandList->ResourceBarrier(1, &transition1);
 
-    UpdateSubresources<1>(m_commandList, defaultBuffer.Get(), uploadBuffer.Get(), 0, 0, 1,
+    UpdateSubresources<1>(m_commandList.Get(), defaultBuffer.Get(), uploadBuffer.Get(), 0, 0, 1,
                           &subResourceData);
 
     auto transition2 = CD3DX12_RESOURCE_BARRIER::Transition(
