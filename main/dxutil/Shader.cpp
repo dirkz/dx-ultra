@@ -44,4 +44,9 @@ ID3DBlob *Shader::Blob()
     return m_blob.Get();
 }
 
+CD3DX12_SHADER_BYTECODE Shader::ByteCode()
+{
+    return CD3DX12_SHADER_BYTECODE{m_blob.Get()};
+}
+
 } // namespace dxultra
