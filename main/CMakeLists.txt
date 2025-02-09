@@ -14,5 +14,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE common)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE windows)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE dxutil)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE d3d12.lib dxgi.lib D3DCompiler.lib)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE d3d12.lib dxgi.lib dxguid.lib D3DCompiler.lib)
 
