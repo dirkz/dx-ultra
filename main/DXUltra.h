@@ -3,6 +3,7 @@
 #include "stdafx.h"
 
 #include "Fence.h"
+#include "Frame.h"
 #include "SwapChain.h"
 #include "WindowCallback.h"
 
@@ -21,6 +22,7 @@ struct DXUltra : WindowCallback
     std::unique_ptr<SwapChain> m_swapChain;
     ComPtr<ID3D12CommandList> m_commandList;
     std::unique_ptr<Fence> m_fence;
+    std::vector<Frame> m_frames;
 };
 
 } // namespace dxultra

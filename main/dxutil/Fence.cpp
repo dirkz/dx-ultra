@@ -3,11 +3,11 @@
 namespace dxultra
 {
 
-constexpr UINT64 InitialValue = 0;
+constexpr UINT64 InitialFenceValue = 0;
 
-Fence::Fence(ID3D12Device4 *pDevice) : m_value{InitialValue}
+Fence::Fence(ID3D12Device4 *pDevice) : m_value{InitialFenceValue}
 {
-    ThrowIfFailed(pDevice->CreateFence(InitialValue, D3D12_FENCE_FLAG_NONE,
+    ThrowIfFailed(pDevice->CreateFence(InitialFenceValue, D3D12_FENCE_FLAG_NONE,
                                        IID_PPV_ARGS(m_fence.GetAddressOf())));
     m_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     if (!m_event)
@@ -29,7 +29,7 @@ void Fence::Signal(ID3D12CommandQueue *pCommandQueue)
 
 void Fence::Wait()
 {
-    if (m_value == InitialValue)
+    if (m_value == InitialFenceValue)
     {
         return;
     }

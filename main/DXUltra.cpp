@@ -48,6 +48,12 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
                                                IID_PPV_ARGS(m_commandList.GetAddressOf())));
 
     m_fence.reset(new Fence{m_device.Get()});
+
+    //m_frames.resize(NumFrames);
+    for (UINT i = 0; i < NumFrames; i++)
+    {
+        m_frames[i] = Frame{m_device.Get(), i};
+    }
 }
 
 void DXUltra::OnUpdate()
