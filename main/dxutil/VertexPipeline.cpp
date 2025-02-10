@@ -5,10 +5,33 @@
 namespace dxultra
 {
 
-VertexPipeline::VertexPipeline(const std::wstring &vertexShaderName,
+VertexPipeline::VertexPipeline(ID3D12Device4 *pDevice, const std::wstring &vertexShaderName,
                                const std::wstring &pixelShaderName)
     : m_vertexShader{vertexShaderName}, m_pixelShader{pixelShaderName}
 {
+
+    CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
+    rootSignatureDesc.Init(0, nullptr, 0, nullptr,
+                           D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+    ComPtr<ID3DBlob> signature;
+    ComPtr<ID3DBlob> error;
+    HRESULT hr = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1,
+                                             &signature, &error);
+
+    if (FAILED(hr))
+    {
+        // Is the error NUL terminated? Is it characters?
+        const char *ptrChar = static_cast<const char *>(error->GetBufferPointer());
+        std::string msg{ptrChar, error->GetBufferSize()};
+        OutputDebugStringA(msg.c_str());
+        OutputDebugStringA("\n");
+    }
+    ThrowIfFailed(hr);
+
+    ThrowIfFailed(pDevice->CreateRootSignature(0, signature->GetBufferPointer(),
+                                               signature->GetBufferSize(),
+                                               IID_PPV_ARGS(&m_rootSignature)));
 }
 
 D3D12_INPUT_LAYOUT_DESC VertexPipeline::InputLayoutDescription()
