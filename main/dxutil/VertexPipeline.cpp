@@ -16,12 +16,11 @@ VertexPipeline::VertexPipeline(ID3D12Device4 *pDevice, const std::wstring &verte
 
     ComPtr<ID3DBlob> signature;
     ComPtr<ID3DBlob> error;
-    HRESULT hr = D3D12SerializeRootSignature(
-        &rootSignatureDesc, static_cast<D3D_ROOT_SIGNATURE_VERSION>(4), &signature, &error);
+    HRESULT hr = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1,
+                                             &signature, &error);
 
     if (FAILED(hr))
     {
-        // Is the error NUL terminated? Is it characters?
         const char *ptrChar = static_cast<const char *>(error->GetBufferPointer());
         std::string msg{ptrChar, error->GetBufferSize()};
         OutputDebugStringA(msg.c_str());
@@ -58,6 +57,11 @@ CD3DX12_SHADER_BYTECODE VertexPipeline::VertexShaderByteCode()
 CD3DX12_SHADER_BYTECODE VertexPipeline::PixelShaderByteCode()
 {
     return m_pixelShader.ByteCode();
+}
+
+ID3D12RootSignature *VertexPipeline::RootSignature()
+{
+    return m_rootSignature.Get();
 }
 
 } // namespace dxultra
