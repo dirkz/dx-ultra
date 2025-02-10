@@ -7,7 +7,7 @@ namespace dxultra
 
 struct Shader
 {
-    Shader(std::string filename);
+    Shader(std::wstring filename);
 
     ID3DBlob *Blob();
     CD3DX12_SHADER_BYTECODE ByteCode();

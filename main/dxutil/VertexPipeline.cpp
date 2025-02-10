@@ -5,8 +5,8 @@
 namespace dxultra
 {
 
-VertexPipeline::VertexPipeline(const std::string &vertexShaderName,
-                               const std::string &pixelShaderName)
+VertexPipeline::VertexPipeline(const std::wstring &vertexShaderName,
+                               const std::wstring &pixelShaderName)
     : m_vertexShader{vertexShaderName}, m_pixelShader{pixelShaderName}
 {
 }

@@ -55,7 +55,7 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
         m_frames[i].reset(new Frame{m_device.Get(), i});
     }
 
-    VertexPipeline pipeline{"basic_triangle.hlsl_VS.cso", "basic_triangle.hlsl_PS.cso"};
+    VertexPipeline pipeline{L"basic_triangle.hlsl_VS.cso", L"basic_triangle.hlsl_PS.cso"};
 }
 
 void DXUltra::OnUpdate()

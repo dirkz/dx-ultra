@@ -9,7 +9,7 @@ namespace dxultra
 
 struct VertexPipeline
 {
-    VertexPipeline(const std::string &vertexShaderName, const std::string &pixelShaderName);
+    VertexPipeline(const std::wstring &vertexShaderName, const std::wstring &pixelShaderName);
 
     D3D12_INPUT_LAYOUT_DESC InputLayoutDescription();
 

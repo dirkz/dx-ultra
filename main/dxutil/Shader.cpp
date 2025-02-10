@@ -3,7 +3,7 @@
 namespace dxultra
 {
 
-Shader::Shader(std::string filename)
+Shader::Shader(std::wstring filename)
 {
     DWORD capacity = MAX_PATH;
     std::wstring strModulePath{};
