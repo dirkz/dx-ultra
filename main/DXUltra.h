@@ -18,6 +18,8 @@ struct DXUltra : WindowCallback
     void OnDestroy() override;
 
   private:
+    void CreatePipeline();
+
     ComPtr<ID3D12Device4> m_device;
     ComPtr<ID3D12CommandQueue> m_commandQueue;
     std::unique_ptr<SwapChain> m_swapChain;

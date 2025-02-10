@@ -55,8 +55,7 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
         m_frames[i].reset(new Frame{m_device.Get(), i});
     }
 
-    VertexPipeline pipeline{m_device.Get(), L"basic_triangle.hlsl_VS.cso",
-                            L"basic_triangle.hlsl_PS.cso"};
+    CreatePipeline();
 }
 
 void DXUltra::OnUpdate()
@@ -87,6 +86,12 @@ void DXUltra::OnRender()
 void DXUltra::OnDestroy()
 {
     m_fence->SignalAndWait(m_commandQueue.Get());
+}
+
+void DXUltra::CreatePipeline()
+{
+    VertexPipeline pipeline{m_device.Get(), L"basic_triangle.hlsl_VS.cso",
+                            L"basic_triangle.hlsl_PS.cso"};
 }
 
 } // namespace dxultra
