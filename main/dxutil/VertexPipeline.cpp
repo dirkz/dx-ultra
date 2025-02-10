@@ -22,7 +22,6 @@ VertexPipeline::VertexPipeline(ID3D12Device4 *pDevice, const std::wstring &verte
                                    D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
                                    InstanceDataStepRate}}
 {
-
     CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
     rootSignatureDesc.Init(0, nullptr, 0, nullptr,
                            D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
