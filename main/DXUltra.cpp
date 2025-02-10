@@ -1,6 +1,8 @@
 #include "DXUltra.h"
 
 #include "Constants.h"
+#include "DefaultBufferUploader.h"
+#include "Vertex.h"
 #include "VertexPipeline.h"
 
 namespace dxultra
@@ -56,6 +58,7 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     }
 
     CreatePipeline();
+    UploadData();
 }
 
 void DXUltra::OnUpdate()
@@ -109,6 +112,19 @@ void DXUltra::CreatePipeline()
     psoDesc.SampleDesc.Count = 1;
 
     ThrowIfFailed(m_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_pipelineState)));
+}
+
+void DXUltra::UploadData()
+{
+    Vertex vertices[]{{-0.5, -0.5, 0, Colors::OrangeRed},
+                      {0, 0.5, 0, Colors::DarkSeaGreen},
+                      {0.5, -0.5, 0, Colors::AliceBlue}};
+    UINT16 indices[]{0, 1, 2};
+
+    DefaultBufferUploader uploader{m_device.Get(), m_commandQueue.Get(), m_commandList.Get()};
+    ComPtr<ID3D12Resource1> vertexBuffer = uploader.Upload(vertices, sizeof(vertices));
+    ComPtr<ID3D12Resource1> indexBuffer = uploader.Upload(indices, sizeof(indices));
+    uploader.Execute();
 }
 
 } // namespace dxultra

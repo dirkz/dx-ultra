@@ -11,6 +11,9 @@ DefaultBufferUploader::DefaultBufferUploader(ComPtr<ID3D12Device4> device,
 {
     ThrowIfFailed(device.Get()->CreateCommandAllocator(
         D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_commandAllocator.GetAddressOf())));
+
+    ThrowIfFailed(m_commandAllocator->Reset());
+    ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), nullptr));
 }
 
 ComPtr<ID3D12Resource1> DefaultBufferUploader::Upload(const void *pData, UINT64 size)
@@ -52,8 +55,7 @@ ComPtr<ID3D12Resource1> DefaultBufferUploader::Upload(const void *pData, UINT64 
 
 void DefaultBufferUploader::Execute()
 {
-    ThrowIfFailed(m_commandAllocator->Reset());
-    ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), nullptr));
+    ThrowIfFailed(m_commandList.Get()->Close());
 
     ID3D12CommandList *ppCommandLists[]{m_commandList.Get()};
     m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);

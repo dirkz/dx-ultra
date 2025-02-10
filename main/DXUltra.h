@@ -19,6 +19,7 @@ struct DXUltra : WindowCallback
 
   private:
     void CreatePipeline();
+    void UploadData();
 
     ComPtr<ID3D12Device4> m_device;
     ComPtr<ID3D12CommandQueue> m_commandQueue;
