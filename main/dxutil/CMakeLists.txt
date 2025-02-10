@@ -11,7 +11,9 @@ add_library(dxutil OBJECT
 	Shader.h
 	Shader.cpp
 	DefaultBufferUploader.h
-	DefaultBufferUploader.cpp)
+	DefaultBufferUploader.cpp
+	Vertex.h
+	Vertex.cpp)
 
 target_include_directories(dxutil PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
