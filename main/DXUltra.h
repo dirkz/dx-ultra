@@ -33,6 +33,8 @@ struct DXUltra : WindowCallback
     std::unique_ptr<Fence> m_fence;
 
     std::array<std::unique_ptr<Frame>, NumFrames> m_frames;
+
+    ComPtr<ID3D12PipelineState> m_pipelineState;
 };
 
 } // namespace dxultra
