@@ -7,8 +7,8 @@ namespace dxultra
 
 struct Vertex
 {
-    XMVECTOR Position;
-    XMVECTOR Color;
+    XMFLOAT3 Position;
+    XMFLOAT3 Color;
 };
 
 } // namespace dxultra
