@@ -30,7 +30,6 @@ Shader::Shader(std::wstring filename)
 
     size_t fileSize = file.tellg();
 
-    ComPtr<ID3DBlob> m_blob;
     ThrowIfFailed(D3DCreateBlob(fileSize, m_blob.GetAddressOf()));
 
     file.seekg(0);
