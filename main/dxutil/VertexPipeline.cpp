@@ -5,6 +5,12 @@
 namespace dxultra
 {
 
+VertexPipeline::VertexPipeline(const std::string &vertexShaderName,
+                               const std::string &pixelShaderName)
+    : m_vertexShader{vertexShaderName}, m_pixelShader{pixelShaderName}
+{
+}
+
 D3D12_INPUT_LAYOUT_DESC VertexPipeline::InputLayoutDescription()
 {
     constexpr UINT SemanticIndex = 0;
@@ -19,6 +25,16 @@ D3D12_INPUT_LAYOUT_DESC VertexPipeline::InputLayoutDescription()
          D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, InstanceDataStepRate}};
 
     return {inputDescriptions, _countof(inputDescriptions)};
+}
+
+CD3DX12_SHADER_BYTECODE VertexPipeline::VertexShaderByteCode()
+{
+    return m_vertexShader.ByteCode();
+}
+
+CD3DX12_SHADER_BYTECODE VertexPipeline::PixelShaderByteCode()
+{
+    return m_pixelShader.ByteCode();
 }
 
 } // namespace dxultra
