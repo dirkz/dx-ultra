@@ -23,6 +23,7 @@ struct VertexPipeline
     Shader m_vertexShader;
     Shader m_pixelShader;
     ComPtr<ID3D12RootSignature> m_rootSignature;
+    std::array<D3D12_INPUT_ELEMENT_DESC, 2> m_inputElementDescriptions;
 };
 
 } // namespace dxultra

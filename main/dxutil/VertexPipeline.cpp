@@ -5,9 +5,22 @@
 namespace dxultra
 {
 
+constexpr UINT SemanticIndex = 0;
+constexpr UINT InputSlot = 0;
+constexpr UINT InstanceDataStepRate = 0;
+
 VertexPipeline::VertexPipeline(ID3D12Device4 *pDevice, const std::wstring &vertexShaderName,
                                const std::wstring &pixelShaderName)
-    : m_vertexShader{vertexShaderName}, m_pixelShader{pixelShaderName}
+    : m_vertexShader{vertexShaderName}, m_pixelShader{pixelShaderName},
+      m_inputElementDescriptions{
+          D3D12_INPUT_ELEMENT_DESC{"POSITION", SemanticIndex, DXGI_FORMAT_R32G32B32_FLOAT,
+                                   InputSlot, offsetof(Vertex, Position),
+                                   D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+                                   InstanceDataStepRate},
+          D3D12_INPUT_ELEMENT_DESC{"COLOR", SemanticIndex, DXGI_FORMAT_R32G32B32_FLOAT, InputSlot,
+                                   offsetof(Vertex, Color),
+                                   D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+                                   InstanceDataStepRate}}
 {
 
     CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
@@ -35,18 +48,8 @@ VertexPipeline::VertexPipeline(ID3D12Device4 *pDevice, const std::wstring &verte
 
 D3D12_INPUT_LAYOUT_DESC VertexPipeline::InputLayoutDescription()
 {
-    constexpr UINT SemanticIndex = 0;
-    constexpr UINT InputSlot = 0;
-    constexpr UINT InstanceDataStepRate = 0;
-
-    constexpr D3D12_INPUT_ELEMENT_DESC inputDescriptions[] = {
-        {"POSITION", SemanticIndex, DXGI_FORMAT_R32G32B32_FLOAT, InputSlot,
-         offsetof(Vertex, Position), D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-         InstanceDataStepRate},
-        {"COLOR", SemanticIndex, DXGI_FORMAT_R32G32B32_FLOAT, InputSlot, offsetof(Vertex, Color),
-         D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, InstanceDataStepRate}};
-
-    return {inputDescriptions, _countof(inputDescriptions)};
+    return {m_inputElementDescriptions.data(),
+            static_cast<UINT>(m_inputElementDescriptions.size())};
 }
 
 CD3DX12_SHADER_BYTECODE VertexPipeline::VertexShaderByteCode()
