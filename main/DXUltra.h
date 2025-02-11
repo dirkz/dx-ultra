@@ -36,6 +36,11 @@ struct DXUltra : WindowCallback
     std::array<std::unique_ptr<Frame>, NumFrames> m_frames;
 
     ComPtr<ID3D12PipelineState> m_pipelineState;
+
+	ComPtr<ID3D12Resource1> m_vertexBuffer;
+	ComPtr<ID3D12Resource1> m_indexBuffer;
+    D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;
+    D3D12_INDEX_BUFFER_VIEW m_indexBufferView;
 };
 
 } // namespace dxultra

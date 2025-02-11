@@ -122,9 +122,19 @@ void DXUltra::UploadData()
     UINT16 indices[]{0, 1, 2};
 
     DefaultBufferUploader uploader{m_device.Get(), m_commandQueue.Get(), m_commandList.Get()};
-    ComPtr<ID3D12Resource1> vertexBuffer = uploader.Upload(vertices, sizeof(vertices));
-    ComPtr<ID3D12Resource1> indexBuffer = uploader.Upload(indices, sizeof(indices));
+
+    m_vertexBuffer = uploader.Upload(vertices, sizeof(vertices));
+    m_indexBuffer = uploader.Upload(indices, sizeof(indices));
+
     uploader.Execute();
+
+    m_vertexBufferView.BufferLocation = m_vertexBuffer->GetGPUVirtualAddress();
+    m_vertexBufferView.StrideInBytes = sizeof(Vertex);
+    m_vertexBufferView.SizeInBytes = sizeof(vertices);
+
+    m_indexBufferView.BufferLocation = m_indexBuffer->GetGPUVirtualAddress();
+    m_indexBufferView.Format = DXGI_FORMAT_R16_UINT;
+    m_indexBufferView.SizeInBytes = sizeof(indices);
 }
 
 } // namespace dxultra
