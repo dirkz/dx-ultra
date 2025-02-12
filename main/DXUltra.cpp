@@ -94,6 +94,8 @@ void DXUltra::OnRender()
         D3D12_RESOURCE_STATE_RENDER_TARGET);
     m_commandList->ResourceBarrier(1, &transitionPresentToRenderTarget);
 
+    m_commandList->OMSetRenderTargets(1, &renderTargetHandle, FALSE, nullptr);
+
     const float clearColor[] = {0.0f, 0.2f, 0.4f, 1.0f};
     m_commandList->ClearRenderTargetView(renderTargetHandle, clearColor, 0, nullptr);
 
