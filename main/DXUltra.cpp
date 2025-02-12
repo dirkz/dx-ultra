@@ -100,8 +100,9 @@ void DXUltra::OnRender()
     m_commandList->ClearRenderTargetView(renderTargetHandle, clearColor, 0, nullptr);
 
     m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_commandList->IASetIndexBuffer(&m_indexBufferView);
     m_commandList->IASetVertexBuffers(0, 1, &m_vertexBufferView);
-    m_commandList->DrawInstanced(3, 1, 0, 0);
+    m_commandList->DrawIndexedInstanced(3, 1, 0, 0, 0);
 
     auto transitionRenderTargetToPresent = CD3DX12_RESOURCE_BARRIER::Transition(
         m_swapChain->CurrentRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET,
