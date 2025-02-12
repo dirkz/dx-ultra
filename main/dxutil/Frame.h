@@ -11,7 +11,7 @@ struct Frame
 {
     Frame(ID3D12Device4 *pDevice);
 
-    void Start(ID3D12GraphicsCommandList *pCommandList);
+    void Start(ID3D12GraphicsCommandList *pCommandList, ID3D12PipelineState *pPipelineState);
     void Finish(ID3D12CommandQueue *pCommandQueue);
 
   private:

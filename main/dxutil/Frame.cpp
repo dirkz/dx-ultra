@@ -9,12 +9,12 @@ Frame::Frame(ID3D12Device4 *pDevice) : m_fence{pDevice}
                                                   IID_PPV_ARGS(m_commandAllocator.GetAddressOf())));
 }
 
-void Frame::Start(ID3D12GraphicsCommandList *pCommandList)
+void Frame::Start(ID3D12GraphicsCommandList *pCommandList, ID3D12PipelineState *pPipelineState)
 {
     m_fence.Wait();
 
     ThrowIfFailed(m_commandAllocator->Reset());
-    ThrowIfFailed(pCommandList->Reset(m_commandAllocator.Get(), nullptr));
+    ThrowIfFailed(pCommandList->Reset(m_commandAllocator.Get(), pPipelineState));
 }
 
 void Frame::Finish(ID3D12CommandQueue *pCommandQueue)

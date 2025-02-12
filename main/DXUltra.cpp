@@ -81,7 +81,7 @@ void DXUltra::OnRender()
 {
     Frame *pFrame = m_frames[m_swapChain->GetCurrentBackBufferIndex()].get();
 
-    pFrame->Start(m_commandList.Get());
+    pFrame->Start(m_commandList.Get(), m_pipelineState.Get());
 
     m_commandList->SetGraphicsRootSignature(m_rootSignature.Get());
     m_commandList->RSSetViewports(1, &m_viewport);
@@ -98,6 +98,10 @@ void DXUltra::OnRender()
 
     const float clearColor[] = {0.0f, 0.2f, 0.4f, 1.0f};
     m_commandList->ClearRenderTargetView(renderTargetHandle, clearColor, 0, nullptr);
+
+    m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_commandList->IASetVertexBuffers(0, 1, &m_vertexBufferView);
+    m_commandList->DrawInstanced(3, 1, 0, 0);
 
     auto transitionRenderTargetToPresent = CD3DX12_RESOURCE_BARRIER::Transition(
         m_swapChain->CurrentRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET,
