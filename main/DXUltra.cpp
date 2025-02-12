@@ -54,7 +54,7 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
 
     for (UINT i = 0; i < NumFrames; i++)
     {
-        m_frames[i].reset(new Frame{m_device.Get(), i});
+        m_frames[i].reset(new Frame{m_device.Get()});
     }
 
     CreatePipeline();
