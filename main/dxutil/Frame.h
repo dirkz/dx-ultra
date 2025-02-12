@@ -15,7 +15,6 @@ struct Frame
     void Finish(ID3D12CommandQueue *pCommandQueue);
 
   private:
-    UINT m_index;
     ComPtr<ID3D12CommandAllocator> m_commandAllocator;
     Fence m_fence;
 };
