@@ -61,9 +61,9 @@ CD3DX12_SHADER_BYTECODE VertexPipeline::PixelShaderByteCode()
     return m_pixelShader.ByteCode();
 }
 
-ID3D12RootSignature *VertexPipeline::RootSignature()
+ComPtr<ID3D12RootSignature> VertexPipeline::RootSignature()
 {
-    return m_rootSignature.Get();
+    return m_rootSignature;
 }
 
 } // namespace dxultra

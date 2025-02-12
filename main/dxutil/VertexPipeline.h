@@ -17,7 +17,7 @@ struct VertexPipeline
     CD3DX12_SHADER_BYTECODE VertexShaderByteCode();
     CD3DX12_SHADER_BYTECODE PixelShaderByteCode();
 
-    ID3D12RootSignature *RootSignature();
+    ComPtr<ID3D12RootSignature> RootSignature();
 
   private:
     Shader m_vertexShader;

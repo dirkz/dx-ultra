@@ -12,6 +12,8 @@ namespace dxultra
 
 struct DXUltra : WindowCallback
 {
+    DXUltra();
+
     void OnInit(HWND hwnd, UINT width, UINT height) override;
     void OnUpdate() override;
     void OnRender() override;
@@ -20,6 +22,9 @@ struct DXUltra : WindowCallback
   private:
     void CreatePipeline();
     void UploadData();
+
+    CD3DX12_VIEWPORT m_viewport;
+    CD3DX12_RECT m_scissorRect;
 
     ComPtr<ID3D12Device4> m_device;
     ComPtr<ID3D12CommandQueue> m_commandQueue;
@@ -36,6 +41,7 @@ struct DXUltra : WindowCallback
     std::array<std::unique_ptr<Frame>, NumFrames> m_frames;
 
     ComPtr<ID3D12PipelineState> m_pipelineState;
+    ComPtr<ID3D12RootSignature> m_rootSignature;
 
 	ComPtr<ID3D12Resource1> m_vertexBuffer;
 	ComPtr<ID3D12Resource1> m_indexBuffer;

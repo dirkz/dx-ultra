@@ -8,8 +8,20 @@
 namespace dxultra
 {
 
+DXUltra::DXUltra()
+    : m_viewport{0.f, 0.f, 0.f, 0.f}, m_scissorRect{0, 0, 0, 0}, m_vertexBufferView{},
+      m_indexBufferView{}
+{
+}
+
 void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
 {
+    m_viewport.Height = static_cast<FLOAT>(height);
+    m_viewport.Width = static_cast<FLOAT>(width);
+
+    m_scissorRect.bottom = height;
+    m_scissorRect.right = width;
+
 #if defined(_DEBUG)
     // Enable the D3D12 debug layer.
     {
@@ -71,6 +83,10 @@ void DXUltra::OnRender()
 
     pFrame->Start(m_commandList.Get());
 
+    m_commandList->SetGraphicsRootSignature(m_rootSignature.Get());
+    m_commandList->RSSetViewports(1, &m_viewport);
+    m_commandList->RSSetScissorRects(1, &m_scissorRect);
+
     CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle = m_swapChain->CurrentRenderTargetHandle();
 
     auto transitionPresentToRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -106,9 +122,11 @@ void DXUltra::CreatePipeline()
     VertexPipeline pipeline{m_device.Get(), L"basic_triangle.hlsl_VS.cso",
                             L"basic_triangle.hlsl_PS.cso"};
 
+    m_rootSignature = pipeline.RootSignature();
+
     D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
     psoDesc.InputLayout = pipeline.InputLayoutDescription();
-    psoDesc.pRootSignature = pipeline.RootSignature();
+    psoDesc.pRootSignature = m_rootSignature.Get();
     psoDesc.VS = pipeline.VertexShaderByteCode();
     psoDesc.PS = pipeline.PixelShaderByteCode();
     psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
