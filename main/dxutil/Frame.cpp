@@ -39,5 +39,16 @@ void Frame::Signal(ID3D12CommandQueue *pCommandQueue)
 {
     m_fence.Signal(pCommandQueue);
 }
+void Frame::Start(ID3D12GraphicsCommandList *pCommandList)
+{
+    m_fence.Wait();
+
+    ThrowIfFailed(m_commandAllocator->Reset());
+    ThrowIfFailed(pCommandList->Reset(m_commandAllocator.Get(), nullptr));
+}
+void Frame::Finish(ID3D12CommandQueue *pCommandQueue)
+{
+    m_fence.Signal(pCommandQueue);
+}
 
 } // namespace dxultra

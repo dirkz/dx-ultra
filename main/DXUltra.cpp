@@ -69,21 +69,31 @@ void DXUltra::OnRender()
 {
     Frame *pFrame = m_frames[m_swapChain->GetCurrentBackBufferIndex()].get();
 
-    // Wait for any previous work of this frame to finish on the command queue.
-    pFrame->Wait();
+    pFrame->Start(m_commandList.Get());
 
     CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle = m_swapChain->CurrentRenderTargetHandle();
 
-    pFrame->PopulateCommandList(m_commandList.Get(), m_swapChain->CurrentRenderTarget(),
-                                renderTargetHandle);
+    auto transitionPresentToRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
+        m_swapChain->CurrentRenderTarget(), D3D12_RESOURCE_STATE_PRESENT,
+        D3D12_RESOURCE_STATE_RENDER_TARGET);
+    m_commandList->ResourceBarrier(1, &transitionPresentToRenderTarget);
+
+    const float clearColor[] = {0.0f, 0.2f, 0.4f, 1.0f};
+    m_commandList->ClearRenderTargetView(renderTargetHandle, clearColor, 0, nullptr);
+
+    auto transitionRenderTargetToPresent = CD3DX12_RESOURCE_BARRIER::Transition(
+        m_swapChain->CurrentRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET,
+        D3D12_RESOURCE_STATE_PRESENT);
+    m_commandList->ResourceBarrier(1, &transitionRenderTargetToPresent);
+
+    ThrowIfFailed(m_commandList->Close());
 
     ID3D12CommandList *ppCommandLists[] = {m_commandList.Get()};
     m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
     m_swapChain->Present(1, 0);
 
-    // When the command queue reaches this, it means this frame has finished its work.
-    pFrame->Signal(m_commandQueue.Get());
+    pFrame->Finish(m_commandQueue.Get());
 }
 
 void DXUltra::OnDestroy()

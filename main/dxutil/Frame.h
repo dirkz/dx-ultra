@@ -34,6 +34,10 @@ struct Frame
     /// <param name="pCommandQueue">The command queue to signal on</param>
     void Signal(ID3D12CommandQueue *pCommandQueue);
 
+    void Start(ID3D12GraphicsCommandList *pCommandList);
+
+    void Finish(ID3D12CommandQueue *pCommandQueue);
+
   private:
     UINT m_index;
     ComPtr<ID3D12CommandAllocator> m_commandAllocator;
