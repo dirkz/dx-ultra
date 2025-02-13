@@ -9,6 +9,7 @@ namespace dxultra
 {
 
 constexpr DXGI_FORMAT SwapChainFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+constexpr DXGI_FORMAT DepthStencilFormat = DXGI_FORMAT_D32_FLOAT;
 
 struct SwapChain
 {
@@ -21,12 +22,14 @@ struct SwapChain
     UINT GetCurrentBackBufferIndex();
     ID3D12Resource *CurrentRenderTarget();
     CD3DX12_CPU_DESCRIPTOR_HANDLE CurrentRenderTargetHandle();
+    CD3DX12_CPU_DESCRIPTOR_HANDLE DepthStencilHandle();
 
   private:
     UINT m_numFrames;
     ComPtr<ID3D12Device4> m_device;
     ComPtr<IDXGISwapChain3> m_swapChain;
     DescriptorHeap m_descriptorHeap;
+    DescriptorHeap m_depthStencilHeap;
     std::array<ComPtr<ID3D12Resource>, NumFrames> m_renderTargets;
 };
 

@@ -6,7 +6,8 @@ namespace dxultra
 SwapChain::SwapChain(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device4> device,
                      ID3D12CommandQueue *pCommandQueue, HWND hwnd, UINT width, UINT height)
     : m_device{device},
-      m_descriptorHeap{device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumFrames, false}
+      m_descriptorHeap{device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, NumFrames, false},
+      m_depthStencilHeap{device.Get(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false}
 {
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
     swapChainDesc.BufferCount = NumFrames;
@@ -57,6 +58,11 @@ ID3D12Resource *SwapChain::CurrentRenderTarget()
 CD3DX12_CPU_DESCRIPTOR_HANDLE SwapChain::CurrentRenderTargetHandle()
 {
     return m_descriptorHeap.HandleCPU(m_swapChain->GetCurrentBackBufferIndex());
+}
+
+CD3DX12_CPU_DESCRIPTOR_HANDLE SwapChain::DepthStencilHandle()
+{
+    return m_depthStencilHeap.HandleCPU(0);
 }
 
 } // namespace dxultra
