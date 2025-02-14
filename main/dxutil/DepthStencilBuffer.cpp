@@ -25,6 +25,9 @@ DepthStencilBuffer::DepthStencilBuffer(ComPtr<ID3D12Device4> device, UINT width,
     ThrowIfFailed(device->CreateCommittedResource(
         &heapProperties, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_COMMON, &clearValue,
         IID_PPV_ARGS(m_depthStencilBuffer.GetAddressOf())));
+
+    m_device->CreateDepthStencilView(m_depthStencilBuffer.Get(), nullptr,
+                                     m_descriptorHeap.HandleCPU(0));
 }
 
 CD3DX12_CPU_DESCRIPTOR_HANDLE DepthStencilBuffer::DescriptorHandle()
