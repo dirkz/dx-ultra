@@ -15,7 +15,9 @@ add_library(dxutil OBJECT
 	Vertex.h
 	Vertex.cpp
 	VertexPipeline.h
-	VertexPipeline.cpp)
+	VertexPipeline.cpp
+	DepthStencilBuffer.h 
+	DepthStencilBuffer.cpp)
 
 target_include_directories(dxutil PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
