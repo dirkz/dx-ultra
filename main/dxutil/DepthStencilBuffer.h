@@ -23,7 +23,7 @@ struct DepthStencilBuffer
   private:
     ComPtr<ID3D12Device4> m_device;
     DescriptorHeap m_descriptorHeap;
-    ComPtr<ID3D12Resource> m_depthStencilBuffer;
+    ComPtr<ID3D12Resource> m_resource;
 };
 
 } // namespace dxultra
