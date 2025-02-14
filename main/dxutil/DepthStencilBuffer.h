@@ -16,7 +16,7 @@ constexpr DXGI_FORMAT DepthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 struct DepthStencilBuffer
 {
-    DepthStencilBuffer(ComPtr<ID3D12Device4> device);
+    DepthStencilBuffer(ComPtr<ID3D12Device4> device, UINT width, UINT height);
 
     CD3DX12_CPU_DESCRIPTOR_HANDLE DescriptorHandle();
 
