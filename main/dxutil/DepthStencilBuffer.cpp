@@ -19,6 +19,12 @@ DepthStencilBuffer::DepthStencilBuffer(ComPtr<ID3D12Device4> device, UINT width,
     desc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
     D3D12_CLEAR_VALUE clearValue{DepthStencilFormat, 1.f, 0};
+
+    D3D12_HEAP_PROPERTIES heapProperties = CD3DX12_HEAP_PROPERTIES{D3D12_HEAP_TYPE_DEFAULT};
+
+    ThrowIfFailed(device->CreateCommittedResource(
+        &heapProperties, D3D12_HEAP_FLAG_NONE, &desc, D3D12_RESOURCE_STATE_COMMON, &clearValue,
+        IID_PPV_ARGS(m_depthStencilBuffer.GetAddressOf())));
 }
 
 CD3DX12_CPU_DESCRIPTOR_HANDLE DepthStencilBuffer::DescriptorHandle()
