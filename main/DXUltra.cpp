@@ -64,6 +64,9 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
                                                D3D12_COMMAND_LIST_FLAG_NONE,
                                                IID_PPV_ARGS(m_commandList.GetAddressOf())));
 
+    ThrowIfFailed(m_device->CreateCommandAllocator(
+        D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_commandAllocator.GetAddressOf())));
+
     m_fence.reset(new Fence{m_device.Get()});
 
     for (UINT i = 0; i < NumFrames; i++)
@@ -119,6 +122,27 @@ void DXUltra::OnRender()
     m_swapChain->Present(1, 0);
 
     pFrame->Finish(m_commandQueue.Get());
+}
+
+void DXUltra::OnResize(UINT width, UINT height)
+{
+    // Anything that depends on the swap chain must be finished
+    // before we manipulate it.
+    m_fence->SignalAndWait(m_commandQueue.Get());
+
+    m_swapChain->Resize(width, height);
+    m_depthStencilBuffer.reset(new DepthStencilBuffer{m_device, width, height});
+
+    ThrowIfFailed(m_commandAllocator->Reset());
+    ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), nullptr));
+
+    m_depthStencilBuffer->Transition(m_commandList.Get());
+
+    ID3D12CommandList *ppCommandLists[] = {m_commandList.Get()};
+    m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+    // Wait for the resize to be finished.
+    m_fence->SignalAndWait(m_commandQueue.Get());
 }
 
 void DXUltra::OnDestroy()

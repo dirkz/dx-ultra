@@ -17,6 +17,7 @@ struct SwapChain
 
     void CreateRenderTargets();
     void Present(UINT syncInterval, UINT flags);
+    void Resize(UINT width, UINT height);
 
     UINT GetCurrentBackBufferIndex();
     ID3D12Resource *CurrentRenderTarget();

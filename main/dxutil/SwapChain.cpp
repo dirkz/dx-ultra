@@ -44,6 +44,12 @@ void SwapChain::Present(UINT syncInterval, UINT flags)
     ThrowIfFailed(m_swapChain->Present(syncInterval, flags));
 }
 
+void SwapChain::Resize(UINT width, UINT height)
+{
+    ThrowIfFailed(m_swapChain->ResizeBuffers(NumFrames, width, height, SwapChainFormat, 0));
+    CreateRenderTargets();
+}
+
 UINT SwapChain::GetCurrentBackBufferIndex()
 {
     return m_swapChain->GetCurrentBackBufferIndex();

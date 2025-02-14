@@ -32,6 +32,11 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
             pCallback->OnUpdate();
             pCallback->OnRender();
             return 0;
+
+        case WM_SIZE:
+            WORD width = LOWORD(lParam);
+            WORD height = HIWORD(lParam);
+            pCallback->OnResize(width, height);
         }
     }
 
