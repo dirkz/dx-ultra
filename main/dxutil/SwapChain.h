@@ -22,14 +22,12 @@ struct SwapChain
     UINT GetCurrentBackBufferIndex();
     ID3D12Resource *CurrentRenderTarget();
     CD3DX12_CPU_DESCRIPTOR_HANDLE CurrentRenderTargetHandle();
-    CD3DX12_CPU_DESCRIPTOR_HANDLE DepthStencilHandle();
 
   private:
     UINT m_numFrames;
     ComPtr<ID3D12Device4> m_device;
     ComPtr<IDXGISwapChain3> m_swapChain;
     DescriptorHeap m_descriptorHeap;
-    DescriptorHeap m_depthStencilHeap;
     std::array<ComPtr<ID3D12Resource>, NumFrames> m_renderTargets;
 };
 
