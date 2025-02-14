@@ -9,7 +9,6 @@ namespace dxultra
 {
 
 constexpr DXGI_FORMAT SwapChainFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
-constexpr DXGI_FORMAT DepthStencilFormat = DXGI_FORMAT_D32_FLOAT;
 
 struct SwapChain
 {

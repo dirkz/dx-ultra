@@ -18,6 +18,8 @@ struct DepthStencilBuffer
 {
     DepthStencilBuffer(ComPtr<ID3D12Device4> device, UINT width, UINT height);
 
+    void Transition(ID3D12GraphicsCommandList *pCommandList);
+
     CD3DX12_CPU_DESCRIPTOR_HANDLE DescriptorHandle();
 
   private:

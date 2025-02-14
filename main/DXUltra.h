@@ -2,6 +2,7 @@
 
 #include "stdafx.h"
 
+#include "DepthStencilBuffer.h"
 #include "Fence.h"
 #include "Frame.h"
 #include "SwapChain.h"
@@ -21,7 +22,7 @@ struct DXUltra : WindowCallback
 
   private:
     void CreatePipeline();
-    void UploadData();
+    void UploadDataAndTransitionDepthStencilBuffer();
 
     CD3DX12_VIEWPORT m_viewport;
     CD3DX12_RECT m_scissorRect;
@@ -29,6 +30,7 @@ struct DXUltra : WindowCallback
     ComPtr<ID3D12Device4> m_device;
     ComPtr<ID3D12CommandQueue> m_commandQueue;
     std::unique_ptr<SwapChain> m_swapChain;
+    std::unique_ptr<DepthStencilBuffer> m_depthStencilBuffer;
 
     // This command list gets reused by individual frames,
     // who bring their own allocators.
@@ -43,8 +45,8 @@ struct DXUltra : WindowCallback
     ComPtr<ID3D12PipelineState> m_pipelineState;
     ComPtr<ID3D12RootSignature> m_rootSignature;
 
-	ComPtr<ID3D12Resource1> m_vertexBuffer;
-	ComPtr<ID3D12Resource1> m_indexBuffer;
+    ComPtr<ID3D12Resource1> m_vertexBuffer;
+    ComPtr<ID3D12Resource1> m_indexBuffer;
     D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;
     D3D12_INDEX_BUFFER_VIEW m_indexBufferView;
 };

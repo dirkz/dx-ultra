@@ -58,6 +58,8 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     m_swapChain.reset(
         new SwapChain{factory.Get(), m_device, m_commandQueue.Get(), hwnd, width, height});
 
+    m_depthStencilBuffer.reset(new DepthStencilBuffer{m_device, width, height});
+
     ThrowIfFailed(m_device->CreateCommandList1(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
                                                D3D12_COMMAND_LIST_FLAG_NONE,
                                                IID_PPV_ARGS(m_commandList.GetAddressOf())));
@@ -70,7 +72,7 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     }
 
     CreatePipeline();
-    UploadData();
+    UploadDataAndTransitionDepthStencilBuffer();
 }
 
 void DXUltra::OnUpdate()
@@ -149,7 +151,7 @@ void DXUltra::CreatePipeline()
     ThrowIfFailed(m_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_pipelineState)));
 }
 
-void DXUltra::UploadData()
+void DXUltra::UploadDataAndTransitionDepthStencilBuffer()
 {
     Vertex vertices[]{{-0.5, -0.5, 0, Colors::OrangeRed},
                       {0, 0.5, 0, Colors::DarkSeaGreen},
@@ -160,6 +162,10 @@ void DXUltra::UploadData()
 
     m_vertexBuffer = uploader.Upload(vertices, sizeof(vertices));
     m_indexBuffer = uploader.Upload(indices, sizeof(indices));
+
+    // Piggy-back on the command list the uploader prepared for
+    // recording for transitioning the depth stencil buffer.
+    m_depthStencilBuffer->Transition(m_commandList.Get());
 
     uploader.Execute();
 
