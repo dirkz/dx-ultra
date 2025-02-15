@@ -3,7 +3,7 @@
 namespace dxultra
 {
 
-SwapChainDepthStencil::SwapChainDepthStencil(IDXGIFactory4 *pFactory,
+SwapChainDepthStencil::SwapChainDepthStencil(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device> device,
                                              ComPtr<ID3D12CommandQueue> commandQueue, HWND hwnd,
                                              UINT width, UINT height)
 {
@@ -23,6 +23,13 @@ SwapChainDepthStencil::SwapChainDepthStencil(IDXGIFactory4 *pFactory,
     ThrowIfFailed(swapChain.As(&m_swapChain));
 
     ThrowIfFailed(pFactory->MakeWindowAssociation(hwnd, DXGI_MWA_NO_ALT_ENTER));
+
+    ThrowIfFailed(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
+                                                 IID_PPV_ARGS(m_commandAllocator.GetAddressOf())));
+}
+
+void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT width, UINT height)
+{
 }
 
 } // namespace dxultra
