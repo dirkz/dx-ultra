@@ -42,10 +42,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
         case WM_GETMINMAXINFO: {
             LPMINMAXINFO pMinMaxInfo = (LPMINMAXINFO)lParam;
-            if (pMinMaxInfo->ptMinTrackSize.x == 0 || pMinMaxInfo->ptMinTrackSize.y == 0)
-            {
-                pMinMaxInfo->ptMinTrackSize = {8, 8};
-            }
+            pMinMaxInfo->ptMinTrackSize = {300, 300};
         }
             return 0;
         }
