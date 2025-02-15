@@ -32,9 +32,6 @@ struct DXUltra : WindowCallback
     ComPtr<ID3D12CommandQueue> m_commandQueue;
     std::unique_ptr<SwapChainDepthStencil> m_swapChain;
 
-    // For the few cases where an own command allocator is needed.
-    ComPtr<ID3D12CommandAllocator> m_commandAllocator;
-
     // This command list gets reused by individual frames,
     // who bring their own allocators.
     ComPtr<ID3D12GraphicsCommandList> m_commandList;
