@@ -17,7 +17,7 @@ struct SwapChainDepthStencil
     void Resize(ID3D12GraphicsCommandList *pCommandList, UINT width, UINT height);
 
     D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilDescriptorHandle();
-    CD3DX12_CPU_DESCRIPTOR_HANDLE SwapChainCurrentRenderTargetHandle();
+    D3D12_CPU_DESCRIPTOR_HANDLE SwapChainCurrentRenderTargetHandle();
 
     UINT GetCurrentBackBufferIndex();
     ID3D12Resource *CurrentRenderTarget();

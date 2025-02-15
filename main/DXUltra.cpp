@@ -87,7 +87,7 @@ void DXUltra::OnRender()
     m_commandList->RSSetViewports(1, &m_viewport);
     m_commandList->RSSetScissorRects(1, &m_scissorRect);
 
-    CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle =
+    D3D12_CPU_DESCRIPTOR_HANDLE renderTargetHandle =
         m_swapChain->SwapChainCurrentRenderTargetHandle();
 
     auto transitionPresentToRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(

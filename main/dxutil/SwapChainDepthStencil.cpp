@@ -118,7 +118,7 @@ D3D12_CPU_DESCRIPTOR_HANDLE SwapChainDepthStencil::DepthStencilDescriptorHandle(
     return m_descriptorHeapDepthStencil->GetCPUDescriptorHandleForHeapStart();
 }
 
-CD3DX12_CPU_DESCRIPTOR_HANDLE SwapChainDepthStencil::SwapChainCurrentRenderTargetHandle()
+D3D12_CPU_DESCRIPTOR_HANDLE SwapChainDepthStencil::SwapChainCurrentRenderTargetHandle()
 {
     return CD3DX12_CPU_DESCRIPTOR_HANDLE(
         m_descriptorHeapRenderTargets->GetCPUDescriptorHandleForHeapStart(),
