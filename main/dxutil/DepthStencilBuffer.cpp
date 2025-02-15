@@ -1,5 +1,7 @@
 #include "DepthStencilBuffer.h"
 
+#include "Constants.h"
+
 namespace dxultra
 {
 

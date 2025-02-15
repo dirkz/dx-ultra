@@ -8,8 +8,6 @@
 namespace dxultra
 {
 
-constexpr DXGI_FORMAT SwapChainFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
-
 struct SwapChain
 {
     SwapChain(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device4> device,
