@@ -58,6 +58,7 @@ void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT
         ThrowIfFailed(m_swapChain->GetBuffer(i, IID_PPV_ARGS(m_renderTargets[i].GetAddressOf())));
         CD3DX12_CPU_DESCRIPTOR_HANDLE rtv =
             CD3DX12_CPU_DESCRIPTOR_HANDLE{rtHandle, i, m_descriptorHeadRenderTargetsIncrementSize};
+        m_device->CreateRenderTargetView(m_renderTargets[i].Get(), nullptr, rtv);
     }
 }
 
