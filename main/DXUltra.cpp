@@ -99,7 +99,8 @@ void DXUltra::OnRender()
         D3D12_RESOURCE_STATE_RENDER_TARGET);
     m_commandList->ResourceBarrier(1, &transitionPresentToRenderTarget);
 
-    m_commandList->OMSetRenderTargets(1, &renderTargetHandle, FALSE, nullptr);
+    CD3DX12_CPU_DESCRIPTOR_HANDLE depthStencilHandle = m_depthStencilBuffer->DescriptorHandle();
+    m_commandList->OMSetRenderTargets(1, &renderTargetHandle, FALSE, &depthStencilHandle);
 
     const float clearColor[] = {0.0f, 0.2f, 0.4f, 1.0f};
     m_commandList->ClearRenderTargetView(renderTargetHandle, clearColor, 0, nullptr);
@@ -170,6 +171,11 @@ void DXUltra::CreatePipeline()
 
     m_rootSignature = pipeline.RootSignature();
 
+    CD3DX12_DEPTH_STENCIL_DESC depthStencilDesc(D3D12_DEFAULT);
+    depthStencilDesc.DepthEnable = true;
+    depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+    depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+
     D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
     psoDesc.InputLayout = pipeline.InputLayoutDescription();
     psoDesc.pRootSignature = m_rootSignature.Get();
@@ -177,8 +183,7 @@ void DXUltra::CreatePipeline()
     psoDesc.PS = pipeline.PixelShaderByteCode();
     psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
     psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-    psoDesc.DepthStencilState.DepthEnable = FALSE;
-    psoDesc.DepthStencilState.StencilEnable = FALSE;
+    psoDesc.DepthStencilState = depthStencilDesc;
     psoDesc.SampleMask = UINT_MAX;
     psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
     psoDesc.NumRenderTargets = 1;
