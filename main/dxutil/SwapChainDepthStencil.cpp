@@ -56,7 +56,7 @@ void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT
     // before we manipulate it.
     m_fence.SignalAndWait(m_commandQueue.Get());
 
-    // swap chain
+    // Swap Chain Creation
 
     // Have to release any previous render targets _before_ the actual resize,
     // so a later ReleaseAndGetAddressOf on re-creation is not an option.
@@ -78,7 +78,7 @@ void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT
         m_device->CreateRenderTargetView(m_renderTargets[i].Get(), nullptr, rtHandle);
     }
 
-    // depth stencil
+    // Depth Stencil Creation
 
     CD3DX12_RESOURCE_DESC depthStencilDesc = CD3DX12_RESOURCE_DESC::Tex2D(
         DepthStencilFormat, width, height, 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
@@ -95,7 +95,7 @@ void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT
         m_depthStencilBuffer.Get(), nullptr,
         m_descriptorHeapDepthStencil->GetCPUDescriptorHandleForHeapStart());
 
-    // transition the depth stencil buffer
+    // Transition the depth stencil buffer
 
     ThrowIfFailed(m_commandAllocator->Reset());
     ThrowIfFailed(pCommandList->Reset(m_commandAllocator.Get(), nullptr));
