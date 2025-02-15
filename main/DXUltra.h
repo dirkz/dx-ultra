@@ -17,7 +17,7 @@ struct DXUltra : WindowCallback
     DXUltra();
 
     void OnInit(HWND hwnd, UINT width, UINT height) override;
-    void Activate(bool isActivated) override;
+    void Activate(bool isBeingActivated) override;
     void OnUpdate() override;
     void OnRender() override;
     void OnResize(UINT width, UINT height) override;
@@ -53,6 +53,7 @@ struct DXUltra : WindowCallback
     D3D12_INDEX_BUFFER_VIEW m_indexBufferView;
 
     Timer m_timer;
+    bool m_hasBeenActivated;
 };
 
 } // namespace dxultra

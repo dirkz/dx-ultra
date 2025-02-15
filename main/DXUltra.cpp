@@ -10,7 +10,7 @@ namespace dxultra
 
 DXUltra::DXUltra()
     : m_viewport{0.f, 0.f, 0.f, 0.f}, m_scissorRect{0, 0, 0, 0}, m_vertexBufferView{},
-      m_indexBufferView{}
+      m_indexBufferView{}, m_hasBeenActivated{false}
 {
 }
 
@@ -73,11 +73,19 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     UploadData();
 }
 
-void DXUltra::Activate(bool isActivated)
+void DXUltra::Activate(bool isBeingActivated)
 {
-    if (isActivated)
+    if (isBeingActivated)
     {
-        m_timer.Start();
+        if (!m_hasBeenActivated)
+        {
+            m_hasBeenActivated = true;
+            m_timer.Start();
+        }
+        else
+        {
+            m_timer.Resume();
+        }
     }
     else
     {
