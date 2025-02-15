@@ -59,9 +59,9 @@ void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT
     // swap chain
 
     // Have to release any previous render targets before the actual resize.
-    for (ComPtr<ID3D12Resource> renderTargets : m_renderTargets)
+    for (auto i = 0; i < m_renderTargets.size(); ++i)
     {
-        renderTargets.Reset();
+        m_renderTargets[i].Reset();
     }
 
     ThrowIfFailed(m_swapChain->ResizeBuffers(NumFrames, width, height, SwapChainFormat, 0));
