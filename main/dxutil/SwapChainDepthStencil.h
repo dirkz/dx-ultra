@@ -17,8 +17,12 @@ struct SwapChainDepthStencil
     void Resize(ID3D12GraphicsCommandList *pCommandList, UINT width, UINT height);
 
   private:
+    ComPtr<ID3D12Device> m_device;
     ComPtr<IDXGISwapChain3> m_swapChain;
     ComPtr<ID3D12CommandAllocator> m_commandAllocator;
+    std::array<ComPtr<ID3D12Resource>, NumFrames> m_renderTargets;
+    ComPtr<ID3D12DescriptorHeap> m_descriptorHeapRenderTargets;
+    UINT m_descriptorHeadRenderTargetsIncrementSize;
 };
 
 } // namespace dxultra
