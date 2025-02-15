@@ -48,6 +48,8 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
         case WM_ACTIVATE: {
             WORD action = LOWORD(wParam);
+            std::wstring msg = L"*** WM_ACTIVATE with action " + std::to_wstring(action) + L"\n";
+            OutputDebugString(msg.c_str());
             bool isBeingActivated = action != WA_INACTIVE;
             pCallback->Activate(isBeingActivated);
         }
