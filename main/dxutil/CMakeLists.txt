@@ -15,7 +15,9 @@ add_library(dxutil OBJECT
 	VertexPipeline.h
 	VertexPipeline.cpp
 	SwapChainDepthStencil.h
-	SwapChainDepthStencil.cpp)
+	SwapChainDepthStencil.cpp
+	Timer.h
+	Timer.cpp)
 
 target_include_directories(dxutil PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
