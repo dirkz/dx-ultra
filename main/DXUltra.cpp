@@ -131,13 +131,13 @@ void DXUltra::OnResize(UINT width, UINT height)
         return;
     }
 
+    m_swapChain->Resize(m_commandList.Get(), width, height);
+
     m_viewport.Height = static_cast<FLOAT>(height);
     m_viewport.Width = static_cast<FLOAT>(width);
 
     m_scissorRect.bottom = height;
     m_scissorRect.right = width;
-
-    m_swapChain->Resize(m_commandList.Get(), width, height);
 }
 
 void DXUltra::OnDestroy()
