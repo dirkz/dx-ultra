@@ -37,6 +37,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
             WORD width = LOWORD(lParam);
             WORD height = HIWORD(lParam);
             pCallback->OnResize(width, height);
+            return 0;
         }
     }
 
