@@ -2,8 +2,6 @@ add_library(dxutil OBJECT
 	Constants.h
 	DescriptorHeap.h
 	DescriptorHeap.cpp
-	SwapChain.h
-	SwapChain.cpp
 	Fence.h
 	Fence.cpp
 	Frame.h
@@ -16,8 +14,6 @@ add_library(dxutil OBJECT
 	Vertex.cpp
 	VertexPipeline.h
 	VertexPipeline.cpp
-	DepthStencilBuffer.h 
-	DepthStencilBuffer.cpp
 	SwapChainDepthStencil.h
 	SwapChainDepthStencil.cpp)
 
