@@ -24,8 +24,6 @@ SwapChain::SwapChain(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device4> device,
     ThrowIfFailed(swapChain.As(&m_swapChain));
 
     ThrowIfFailed(pFactory->MakeWindowAssociation(hwnd, DXGI_MWA_NO_ALT_ENTER));
-
-    CreateRenderTargets();
 }
 
 void SwapChain::CreateRenderTargets()
