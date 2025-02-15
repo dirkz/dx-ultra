@@ -45,10 +45,22 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
             pMinMaxInfo->ptMinTrackSize = MinimumWindowsDimensions;
         }
             return 0;
+
+        case WM_ACTIVATE: {
+            WORD action = LOWORD(wParam);
+            if (action == WA_INACTIVE)
+            {
+            }
+        }
+            return 0;
         }
     }
 
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
+
+Window::Window(WindowCallback *callback) : m_callback{callback}
+{
 }
 
 int Window::Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd)

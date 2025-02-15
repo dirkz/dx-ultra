@@ -9,7 +9,7 @@ namespace dxultra
 
 struct Window
 {
-    Window(WindowCallback *callback) : m_callback{callback} {};
+    Window(WindowCallback *callback);
 
     int Run(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd);
 
