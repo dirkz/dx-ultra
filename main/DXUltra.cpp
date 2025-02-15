@@ -138,6 +138,8 @@ void DXUltra::OnResize(UINT width, UINT height)
 
     m_depthStencilBuffer->Transition(m_commandList.Get());
 
+    ThrowIfFailed(m_commandList->Close());
+
     ID3D12CommandList *ppCommandLists[] = {m_commandList.Get()};
     m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
