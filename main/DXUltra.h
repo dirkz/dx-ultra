@@ -6,6 +6,7 @@
 #include "Fence.h"
 #include "Frame.h"
 #include "SwapChainDepthStencil.h"
+#include "Timer.h"
 #include "WindowCallback.h"
 
 namespace dxultra
@@ -16,6 +17,7 @@ struct DXUltra : WindowCallback
     DXUltra();
 
     void OnInit(HWND hwnd, UINT width, UINT height) override;
+    void Activate(bool isActivated) override;
     void OnUpdate() override;
     void OnRender() override;
     void OnResize(UINT width, UINT height) override;
@@ -49,6 +51,8 @@ struct DXUltra : WindowCallback
     ComPtr<ID3D12Resource1> m_indexBuffer;
     D3D12_VERTEX_BUFFER_VIEW m_vertexBufferView;
     D3D12_INDEX_BUFFER_VIEW m_indexBufferView;
+
+    Timer m_timer;
 };
 
 } // namespace dxultra

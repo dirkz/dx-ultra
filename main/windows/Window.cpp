@@ -48,9 +48,8 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
         case WM_ACTIVATE: {
             WORD action = LOWORD(wParam);
-            if (action == WA_INACTIVE)
-            {
-            }
+            bool isActivated = action != WA_INACTIVE;
+            pCallback->Activate(isActivated);
         }
             return 0;
         }

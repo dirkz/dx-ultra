@@ -73,6 +73,18 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     UploadData();
 }
 
+void DXUltra::Activate(bool isActivated)
+{
+    if (isActivated)
+    {
+        m_timer.Start();
+    }
+    else
+    {
+        m_timer.Pause();
+    }
+}
+
 void DXUltra::OnUpdate()
 {
 }
