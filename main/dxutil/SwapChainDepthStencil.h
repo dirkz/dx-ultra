@@ -3,14 +3,14 @@
 #include "stdafx.h"
 
 #include "Constants.h"
+#include "Fence.h"
 
 namespace dxultra
 {
 
 struct SwapChainDepthStencil
 {
-
-    SwapChainDepthStencil(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device> device,
+    SwapChainDepthStencil(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device4> device,
                           ComPtr<ID3D12CommandQueue> commandQueue, HWND hwnd, UINT width,
                           UINT height);
 
@@ -20,9 +20,14 @@ struct SwapChainDepthStencil
     CD3DX12_CPU_DESCRIPTOR_HANDLE SwapChainCurrentRenderTargetHandle();
 
   private:
-    ComPtr<ID3D12Device> m_device;
+    ComPtr<ID3D12Device4> m_device;
+    ComPtr<ID3D12CommandQueue> m_commandQueue;
     ComPtr<IDXGISwapChain3> m_swapChain;
+
+    Fence m_fence;
+
     ComPtr<ID3D12CommandAllocator> m_commandAllocator;
+
     std::array<ComPtr<ID3D12Resource>, NumFrames> m_renderTargets;
     ComPtr<ID3D12DescriptorHeap> m_descriptorHeapRenderTargets;
     UINT m_descriptorHeapRenderTargetsIncrementSize;

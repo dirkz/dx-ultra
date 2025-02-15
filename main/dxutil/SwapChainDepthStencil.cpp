@@ -3,10 +3,10 @@
 namespace dxultra
 {
 
-SwapChainDepthStencil::SwapChainDepthStencil(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device> device,
+SwapChainDepthStencil::SwapChainDepthStencil(IDXGIFactory4 *pFactory, ComPtr<ID3D12Device4> device,
                                              ComPtr<ID3D12CommandQueue> commandQueue, HWND hwnd,
                                              UINT width, UINT height)
-    : m_device{device}
+    : m_device{device}, m_commandQueue{commandQueue}, m_fence{device.Get()}
 {
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
     swapChainDesc.BufferCount = NumFrames;
@@ -18,15 +18,15 @@ SwapChainDepthStencil::SwapChainDepthStencil(IDXGIFactory4 *pFactory, ComPtr<ID3
     swapChainDesc.SampleDesc.Count = 1;
 
     ComPtr<IDXGISwapChain1> swapChain;
-    ThrowIfFailed(pFactory->CreateSwapChainForHwnd(commandQueue.Get(), hwnd, &swapChainDesc,
+    ThrowIfFailed(pFactory->CreateSwapChainForHwnd(m_commandQueue.Get(), hwnd, &swapChainDesc,
                                                    nullptr, nullptr, swapChain.GetAddressOf()));
 
     ThrowIfFailed(swapChain.As(&m_swapChain));
 
     ThrowIfFailed(pFactory->MakeWindowAssociation(hwnd, DXGI_MWA_NO_ALT_ENTER));
 
-    ThrowIfFailed(device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
-                                                 IID_PPV_ARGS(m_commandAllocator.GetAddressOf())));
+    ThrowIfFailed(m_device->CreateCommandAllocator(
+        D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_commandAllocator.GetAddressOf())));
 
     // render target descriptor heap
 
@@ -35,23 +35,27 @@ SwapChainDepthStencil::SwapChainDepthStencil(IDXGIFactory4 *pFactory, ComPtr<ID3
     descriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
     descriptorHeapDesc.NumDescriptors = NumFrames;
 
-    ThrowIfFailed(device->CreateDescriptorHeap(
+    ThrowIfFailed(m_device->CreateDescriptorHeap(
         &descriptorHeapDesc, IID_PPV_ARGS(m_descriptorHeapRenderTargets.GetAddressOf())));
 
     m_descriptorHeapRenderTargetsIncrementSize =
-        device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+        m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
     // depth stencil descriptor heap
 
     descriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
     descriptorHeapDesc.NumDescriptors = 1;
 
-    ThrowIfFailed(device->CreateDescriptorHeap(
+    ThrowIfFailed(m_device->CreateDescriptorHeap(
         &descriptorHeapDesc, IID_PPV_ARGS(m_descriptorHeapDepthStencil.GetAddressOf())));
 }
 
 void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT width, UINT height)
 {
+    // Anything that depends on the swap chain must be finished
+    // before we manipulate it.
+    m_fence.SignalAndWait(m_commandQueue.Get());
+
     // swap chain
 
     // Have to release any previous render targets before the actual resize.
@@ -89,6 +93,23 @@ void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT
     m_device->CreateDepthStencilView(
         m_depthStencilBuffer.Get(), nullptr,
         m_descriptorHeapDepthStencil->GetCPUDescriptorHandleForHeapStart());
+
+    // transition the depth stencil buffer
+
+    ThrowIfFailed(m_commandAllocator->Reset());
+    ThrowIfFailed(pCommandList->Reset(m_commandAllocator.Get(), nullptr));
+
+    auto transitionFromCommonToDepthWrite = CD3DX12_RESOURCE_BARRIER::Transition(
+        m_depthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+    pCommandList->ResourceBarrier(1, &transitionFromCommonToDepthWrite);
+
+    ThrowIfFailed(pCommandList->Close());
+
+    ID3D12CommandList *ppCommandLists[] = {pCommandList};
+    m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+    // Wait for the resize to be finished.
+    m_fence.SignalAndWait(m_commandQueue.Get());
 }
 
 D3D12_CPU_DESCRIPTOR_HANDLE SwapChainDepthStencil::DepthStencilDescriptorHandle()
