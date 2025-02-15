@@ -59,7 +59,7 @@ void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT
     // swap chain
 
     // Have to release any previous render targets _before_ the actual resize,
-    // so ReleaseAndGetAddressOf is not an option.
+    // so a later ReleaseAndGetAddressOf on re-creation is not an option.
     for (auto i = 0; i < m_renderTargets.size(); ++i)
     {
         m_renderTargets[i].Reset();
