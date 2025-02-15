@@ -126,6 +126,11 @@ void DXUltra::OnRender()
 
 void DXUltra::OnResize(UINT width, UINT height)
 {
+    if (width < 300 || height < 300)
+    {
+        return;
+    }
+
     // Anything that depends on the swap chain must be finished
     // before we manipulate it.
     m_fence->SignalAndWait(m_commandQueue.Get());
