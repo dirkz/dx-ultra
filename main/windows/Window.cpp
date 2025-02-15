@@ -33,10 +33,20 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
             pCallback->OnRender();
             return 0;
 
-        case WM_SIZE:
+        case WM_SIZE: {
             WORD width = LOWORD(lParam);
             WORD height = HIWORD(lParam);
             pCallback->OnResize(width, height);
+        }
+            return 0;
+
+        case WM_GETMINMAXINFO: {
+            LPMINMAXINFO pMinMaxInfo = (LPMINMAXINFO)lParam;
+            if (pMinMaxInfo->ptMinTrackSize.x == 0 || pMinMaxInfo->ptMinTrackSize.y == 0)
+            {
+                pMinMaxInfo->ptMinTrackSize = {8, 8};
+            }
+        }
             return 0;
         }
     }
