@@ -5,6 +5,9 @@
 namespace dxultra
 {
 
+constexpr UINT MinimumWindowsWidth = 300;
+constexpr UINT MinimumWindowsHeight = 300;
+
 struct WindowCallback
 {
     virtual void OnInit(HWND hwnd, UINT width, UINT height) = 0;
