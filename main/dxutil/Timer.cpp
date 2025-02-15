@@ -11,7 +11,6 @@ Timer::Timer()
 
 void Timer::Start()
 {
-    OutputDebugString(L"*** Timer::Start()\n");
     m_startTimePoint = std::chrono::high_resolution_clock::now();
 }
 
@@ -25,7 +24,6 @@ std::chrono::milliseconds Timer::Total()
 
 void Timer::Pause()
 {
-    OutputDebugString(L"*** Timer::Pause()\n");
     if (m_isPaused)
     {
         return;
@@ -37,7 +35,6 @@ void Timer::Pause()
 
 void Timer::Resume()
 {
-    OutputDebugString(L"*** Timer::Resume()\n");
     if (!m_isPaused)
     {
         return;
