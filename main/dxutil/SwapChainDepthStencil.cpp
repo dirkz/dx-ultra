@@ -58,7 +58,8 @@ void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT
 
     // swap chain
 
-    // Have to release any previous render targets before the actual resize.
+    // Have to release any previous render targets _before_ the actual resize,
+    // so ReleaseAndGetAddressOf is not an option.
     for (auto i = 0; i < m_renderTargets.size(); ++i)
     {
         m_renderTargets[i].Reset();
@@ -88,7 +89,7 @@ void SwapChainDepthStencil::Resize(ID3D12GraphicsCommandList *pCommandList, UINT
 
     ThrowIfFailed(m_device->CreateCommittedResource(
         &heapProperties, D3D12_HEAP_FLAG_NONE, &depthStencilDesc, D3D12_RESOURCE_STATE_COMMON,
-        &clearValue, IID_PPV_ARGS(m_depthStencilBuffer.GetAddressOf())));
+        &clearValue, IID_PPV_ARGS(m_depthStencilBuffer.ReleaseAndGetAddressOf())));
 
     m_device->CreateDepthStencilView(
         m_depthStencilBuffer.Get(), nullptr,
