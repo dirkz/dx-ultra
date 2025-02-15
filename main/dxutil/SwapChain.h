@@ -24,7 +24,6 @@ struct SwapChain
     CD3DX12_CPU_DESCRIPTOR_HANDLE CurrentRenderTargetHandle();
 
   private:
-    UINT m_numFrames;
     ComPtr<ID3D12Device4> m_device;
     ComPtr<IDXGISwapChain3> m_swapChain;
     DescriptorHeap m_descriptorHeap;
