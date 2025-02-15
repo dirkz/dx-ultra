@@ -16,6 +16,9 @@ struct SwapChainDepthStencil
 
     void Resize(ID3D12GraphicsCommandList *pCommandList, UINT width, UINT height);
 
+    D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilDescriptorHandle();
+    CD3DX12_CPU_DESCRIPTOR_HANDLE SwapChainCurrentRenderTargetHandle();
+
   private:
     ComPtr<ID3D12Device> m_device;
     ComPtr<IDXGISwapChain3> m_swapChain;
