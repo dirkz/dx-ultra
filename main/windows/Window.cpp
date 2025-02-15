@@ -42,7 +42,7 @@ static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM l
 
         case WM_GETMINMAXINFO: {
             LPMINMAXINFO pMinMaxInfo = (LPMINMAXINFO)lParam;
-            pMinMaxInfo->ptMinTrackSize = {MinimumWindowsWidth, MinimumWindowsHeight};
+            pMinMaxInfo->ptMinTrackSize = MinimumWindowsDimensions;
         }
             return 0;
         }

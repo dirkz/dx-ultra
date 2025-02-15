@@ -123,7 +123,7 @@ void DXUltra::OnRender()
 
 void DXUltra::OnResize(UINT width, UINT height)
 {
-    if (width < MinimumWindowsWidth || height < MinimumWindowsHeight)
+    if (width < MinimumWindowsDimensions.x || height < MinimumWindowsDimensions.y)
     {
         return;
     }

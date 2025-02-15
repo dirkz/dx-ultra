@@ -5,8 +5,7 @@
 namespace dxultra
 {
 
-constexpr UINT MinimumWindowsWidth = 300;
-constexpr UINT MinimumWindowsHeight = 300;
+constexpr POINT MinimumWindowsDimensions{300, 300};
 
 struct WindowCallback
 {
