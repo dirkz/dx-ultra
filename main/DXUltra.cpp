@@ -55,10 +55,8 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     ThrowIfFailed(
         m_device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(m_commandQueue.GetAddressOf())));
 
-    m_swapChain.reset(
-        new SwapChain{factory.Get(), m_device, m_commandQueue.Get(), hwnd, width, height});
-
-    m_depthStencilBuffer.reset(new DepthStencilBuffer{m_device, width, height});
+    m_swapChain.reset(new SwapChainDepthStencil{factory.Get(), m_device, m_commandQueue.Get(), hwnd,
+                                                width, height});
 
     ThrowIfFailed(m_device->CreateCommandList1(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
                                                D3D12_COMMAND_LIST_FLAG_NONE,
@@ -75,7 +73,7 @@ void DXUltra::OnInit(HWND hwnd, UINT width, UINT height)
     }
 
     CreatePipeline();
-    UploadDataAndTransitionDepthStencilBuffer();
+    UploadData();
 }
 
 void DXUltra::OnUpdate()
@@ -92,14 +90,15 @@ void DXUltra::OnRender()
     m_commandList->RSSetViewports(1, &m_viewport);
     m_commandList->RSSetScissorRects(1, &m_scissorRect);
 
-    CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle = m_swapChain->CurrentRenderTargetHandle();
+    CD3DX12_CPU_DESCRIPTOR_HANDLE renderTargetHandle =
+        m_swapChain->SwapChainCurrentRenderTargetHandle();
 
     auto transitionPresentToRenderTarget = CD3DX12_RESOURCE_BARRIER::Transition(
         m_swapChain->CurrentRenderTarget(), D3D12_RESOURCE_STATE_PRESENT,
         D3D12_RESOURCE_STATE_RENDER_TARGET);
     m_commandList->ResourceBarrier(1, &transitionPresentToRenderTarget);
 
-    CD3DX12_CPU_DESCRIPTOR_HANDLE depthStencilHandle = m_depthStencilBuffer->DescriptorHandle();
+    D3D12_CPU_DESCRIPTOR_HANDLE depthStencilHandle = m_swapChain->DepthStencilDescriptorHandle();
     m_commandList->OMSetRenderTargets(1, &renderTargetHandle, FALSE, &depthStencilHandle);
 
     const float clearColor[] = {0.0f, 0.2f, 0.4f, 1.0f};
@@ -132,31 +131,7 @@ void DXUltra::OnResize(UINT width, UINT height)
         return;
     }
 
-    // Anything that depends on the swap chain must be finished
-    // before we manipulate it.
-    m_fence->SignalAndWait(m_commandQueue.Get());
-
-    m_swapChain->Resize(width, height);
-    m_depthStencilBuffer.reset(new DepthStencilBuffer{m_device, width, height});
-
-    ThrowIfFailed(m_commandAllocator->Reset());
-    ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), nullptr));
-
-    m_depthStencilBuffer->Transition(m_commandList.Get());
-
-    ThrowIfFailed(m_commandList->Close());
-
-    ID3D12CommandList *ppCommandLists[] = {m_commandList.Get()};
-    m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
-
-    m_viewport.Height = static_cast<FLOAT>(height);
-    m_viewport.Width = static_cast<FLOAT>(width);
-
-    m_scissorRect.bottom = height;
-    m_scissorRect.right = width;
-
-    // Wait for the resize to be finished.
-    m_fence->SignalAndWait(m_commandQueue.Get());
+    m_swapChain->Resize(m_commandList.Get(), width, height);
 }
 
 void DXUltra::OnDestroy()
@@ -194,7 +169,7 @@ void DXUltra::CreatePipeline()
     ThrowIfFailed(m_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_pipelineState)));
 }
 
-void DXUltra::UploadDataAndTransitionDepthStencilBuffer()
+void DXUltra::UploadData()
 {
     Vertex vertices[]{{-0.5, -0.5, 0, Colors::OrangeRed},
                       {0, 0.5, 0, Colors::DarkSeaGreen},
@@ -205,10 +180,6 @@ void DXUltra::UploadDataAndTransitionDepthStencilBuffer()
 
     m_vertexBuffer = uploader.Upload(vertices, sizeof(vertices));
     m_indexBuffer = uploader.Upload(indices, sizeof(indices));
-
-    // Piggy-back on the command list the uploader prepared for
-    // recording for transitioning the depth stencil buffer.
-    m_depthStencilBuffer->Transition(m_commandList.Get());
 
     uploader.Execute();
 

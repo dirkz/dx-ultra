@@ -124,4 +124,19 @@ CD3DX12_CPU_DESCRIPTOR_HANDLE SwapChainDepthStencil::SwapChainCurrentRenderTarge
         m_swapChain->GetCurrentBackBufferIndex(), m_descriptorHeapRenderTargetsIncrementSize);
 }
 
+UINT SwapChainDepthStencil::GetCurrentBackBufferIndex()
+{
+    return m_swapChain->GetCurrentBackBufferIndex();
+}
+
+ID3D12Resource *SwapChainDepthStencil::CurrentRenderTarget()
+{
+    return m_renderTargets[m_swapChain->GetCurrentBackBufferIndex()].Get();
+}
+
+void SwapChainDepthStencil::Present(UINT syncInterval, UINT flags)
+{
+    m_swapChain->Present(syncInterval, flags);
+}
+
 } // namespace dxultra

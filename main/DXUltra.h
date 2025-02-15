@@ -2,10 +2,11 @@
 
 #include "stdafx.h"
 
+#include "Constants.h"
 #include "DepthStencilBuffer.h"
 #include "Fence.h"
 #include "Frame.h"
-#include "SwapChain.h"
+#include "SwapChainDepthStencil.h"
 #include "WindowCallback.h"
 
 namespace dxultra
@@ -23,15 +24,14 @@ struct DXUltra : WindowCallback
 
   private:
     void CreatePipeline();
-    void UploadDataAndTransitionDepthStencilBuffer();
+    void UploadData();
 
     CD3DX12_VIEWPORT m_viewport;
     CD3DX12_RECT m_scissorRect;
 
     ComPtr<ID3D12Device4> m_device;
     ComPtr<ID3D12CommandQueue> m_commandQueue;
-    std::unique_ptr<SwapChain> m_swapChain;
-    std::unique_ptr<DepthStencilBuffer> m_depthStencilBuffer;
+    std::unique_ptr<SwapChainDepthStencil> m_swapChain;
 
     // For the few cases where an own command allocator is needed.
     ComPtr<ID3D12CommandAllocator> m_commandAllocator;
