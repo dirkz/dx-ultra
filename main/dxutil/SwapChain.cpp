@@ -33,7 +33,7 @@ void SwapChain::CreateRenderTargets()
     for (UINT i = 0; i < m_renderTargets.size(); ++i)
     {
         ThrowIfFailed(
-            m_swapChain->GetBuffer(i, IID_PPV_ARGS(m_renderTargets[i].ReleaseAndGetAddressOf())));
+            m_swapChain->GetBuffer(i, IID_PPV_ARGS(m_renderTargets[i].GetAddressOf())));
         m_device->CreateRenderTargetView(m_renderTargets[i].Get(), nullptr,
                                          m_descriptorHeap.HandleCPU(i));
     }
@@ -46,6 +46,12 @@ void SwapChain::Present(UINT syncInterval, UINT flags)
 
 void SwapChain::Resize(UINT width, UINT height)
 {
+    // The render targets have to be released before the swap chain gets resized.
+    for (UINT i = 0; i < m_renderTargets.size(); ++i)
+    {
+        m_renderTargets[i].Reset();
+    }
+    
     ThrowIfFailed(m_swapChain->ResizeBuffers(NumFrames, width, height, SwapChainFormat, 0));
     CreateRenderTargets();
 }
