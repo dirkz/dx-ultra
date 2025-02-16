@@ -95,7 +95,7 @@ void DXUltra::Activate(bool isBeingActivated)
 
 void DXUltra::OnUpdate()
 {
-    long long t = m_timer.Total().count();
+    long long tms = m_timer.Total().count();
 }
 
 void DXUltra::OnRender()
