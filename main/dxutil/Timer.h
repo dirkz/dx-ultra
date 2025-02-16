@@ -10,7 +10,19 @@ struct Timer
     Timer();
 
     void Start();
-    std::chrono::milliseconds Total();
+
+    /// <summary>
+    /// Milliseconds elapsed since <code>Start</code>, not counting pauses.
+    /// </summary>
+    /// <returns>Milliseconds as <code>std::chrono::milliseconds</code></returns>
+    std::chrono::milliseconds ElapsedMillisecounds();
+
+    /// <summary>
+    /// Seconds elapsed since <code>Start</code>, not counting pauses.
+    /// </summary>
+    /// <returns>Seconds as <code>double</code></returns>
+    double ElapsedSeconds();
+
     void Pause();
     void Resume();
 

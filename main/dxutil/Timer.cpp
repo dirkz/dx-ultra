@@ -14,12 +14,19 @@ void Timer::Start()
     m_startTimePoint = std::chrono::high_resolution_clock::now();
 }
 
-std::chrono::milliseconds Timer::Total()
+std::chrono::milliseconds Timer::ElapsedMillisecounds()
 {
     auto now = std::chrono::high_resolution_clock::now();
     auto elapsed = now - m_startTimePoint - m_totalPausedTime;
 
     return std::chrono::duration_cast<std::chrono::milliseconds>(elapsed);
+}
+
+double Timer::ElapsedSeconds()
+{
+    std::chrono::milliseconds millis = ElapsedMillisecounds();
+    lldiv_t divResult = std::div(millis.count(), 1000LL);
+    return static_cast<double>(divResult.quot) + static_cast<double>(divResult.rem) / 1000;
 }
 
 void Timer::Pause()
