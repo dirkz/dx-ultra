@@ -96,8 +96,6 @@ void DXUltra::Activate(bool isBeingActivated)
 void DXUltra::OnUpdate()
 {
     double seconds = m_timer.ElapsedSeconds();
-    std::wstring msg = L"*** elapsed " + std::to_wstring(seconds) + L"\n";
-    OutputDebugString(msg.c_str());
 }
 
 void DXUltra::OnRender()
