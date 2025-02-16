@@ -96,6 +96,18 @@ void DXUltra::Activate(bool isBeingActivated)
 void DXUltra::OnUpdate()
 {
     long long tms = m_timer.Total().count();
+    lldiv_t seconds = std::div(tms, 1000LL);
+    double dms = static_cast<double>(seconds.quot) + static_cast<double>(seconds.rem) / 1000;
+    double dms2 = static_cast<double>(tms) / 1000;
+    if (dms != dms2)
+    {
+        std::wstring msgt1 = L"*** tms  " + std::to_wstring(tms) + L"\n";
+        std::wstring msgd1 = L"*** dms  " + std::to_wstring(dms) + L"\n";
+        std::wstring msgd2 = L"*** dms2 " + std::to_wstring(dms2) + L"\n";
+        OutputDebugString(msgt1.c_str());
+        OutputDebugString(msgd1.c_str());
+        OutputDebugString(msgd2.c_str());
+    }
 }
 
 void DXUltra::OnRender()

@@ -19,6 +19,7 @@
 
 #include <array>
 #include <chrono>
+#include <cstdlib>
 #include <exception>
 #include <filesystem>
 #include <format>
